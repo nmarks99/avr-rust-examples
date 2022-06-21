@@ -9,7 +9,6 @@ panic = "abort"
 panic = "abort"
 
 [dependencies]
-ufmt = "0.1.0"
 panic-halt = "0.2.0"
 embedded-hal = "0.2.3"
 
@@ -17,11 +16,3 @@ embedded-hal = "0.2.3"
 git = "https://github.com/Rahix/avr-hal"
 rev = "4f8ab2594d4497bdfbd57b641c05c407f3b309f5"
 features = ["arduino-nano"]
-
-[dependencies.either]
-version = "1.6.1"
-default-features = false
-
-[dependencies.void]
-version = "*"
-default-features = false
