@@ -1,5 +1,5 @@
 [package]
-name = "nano-proto"
+name = "rusty_drone"
 version = "0.1.0"
 
 [profile.dev]

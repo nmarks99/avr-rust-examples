@@ -142,3 +142,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+# Added by cargo
+#
+# already existing elements were commented out
+
+#/target
