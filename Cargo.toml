@@ -1,5 +1,5 @@
 [package]
-name = "rusty_drone"
+name = "rustydrone"
 version = "0.1.0"
 
 [profile.dev]
