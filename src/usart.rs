@@ -1,5 +1,10 @@
 use utils::*;
 use atmega328p::*;
+use core::intrinsics::{volatile_store,volatile_load};
+
+
+const BAUD: u32 = 9600;
+const MY_UBRR: u32 = (SYS_CLK/(16*BAUD)) - 1;
 
 pub unsafe fn usart_init() {
     set_bit(UCSR0A,0x2,false); // sets bit 1, the second bit (U2X0=0x2), to zero
@@ -14,7 +19,35 @@ pub unsafe fn usart_init() {
     set_bit(UCSR0B,0x5,true); // Rx enable
 
     // Set baudrate
-    // let BAUD = ((8000000 / 115200) / 16) - 1;
-    // set_bit(UBRR0H,)
+    volatile_store(UBRR0H,000000110);
+    volatile_store(UBRR0L,0110);
+
+    set_bit(PORTD, 2, true);
+    arduino_hal::delay_ms(800);
+    set_bit(PORTD, 2, false);
+    arduino_hal::delay_ms(800);
+    set_bit(PORTD, 2, true);
+    arduino_hal::delay_ms(800);
+    set_bit(PORTD, 2, false);
+    arduino_hal::delay_ms(800);
+    set_bit(PORTD, 2, true);
+    arduino_hal::delay_ms(800);
+    set_bit(PORTD, 2, false);
+    arduino_hal::delay_ms(2000);
+
 }
 
+pub unsafe fn write_usart(data: &char) {
+    loop {    
+        set_bit(PORTD, 2, true);
+        // set_bit(PORTD, 2, true); // set high
+        match Some(*volatile_load(&UCSR0A) & 1 << *volatile_load(&UDRE0)) {
+            Some(_c) => continue,
+            None => break
+        }
+    }
+    set_bit(PORTD, 2, false);
+    // set_bit(PORTD, 2, false);
+    volatile_store(UDR0, *data as u8);
+
+}

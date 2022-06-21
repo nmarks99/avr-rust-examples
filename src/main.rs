@@ -20,20 +20,24 @@ mod usart;
 #[arduino_hal::entry]
 fn main() -> ! {
     unsafe {
-        usart::usart_init();
-        // let dp = arduino_hal::Peripherals::take().unwrap();
-        // let pins = arduino_hal::pins!(dp);
-
+        let dp = arduino_hal::Peripherals::take().unwrap();
+        let pins = arduino_hal::pins!(dp);
+        let mut _serial = arduino_hal::default_serial!(dp,pins,9600);
+        arduino_hal::delay_ms(2000);
         // Digital pin 13 is also connected to an onboard LED marked "L"
         // let mut led = pins.d2.into_output();
         // led.set_low();
+        
+        // usart::usart_init();c
 
+        
         set_bit(DDRD, 2, true); // set as output
+        set_bit(PORTD, 2, false); // set low
 
+        let msg1: char = '1';
         loop {
-            set_bit(PORTD, 2, true); // set high
-            arduino_hal::delay_ms(500);            
-            set_bit(PORTD, 2, false); // set low
+            arduino_hal::delay_ms(500);
+            usart::write_usart(&msg1);
             arduino_hal::delay_ms(500);
         }
     }
