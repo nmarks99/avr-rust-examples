@@ -17,10 +17,12 @@ pub unsafe fn usart_init() {
     // Enable receiver and transitter
     set_bit(UCSR0B,0x4,true); // Tx enable
     set_bit(UCSR0B,0x5,true); // Rx enable
+    // volatile_store(UCSR0B, (1<<*TXEN0) | (1<<*RXEN0) );
+    // volatile_store(UCSR0C, (1<<0b00000001) | (1<<0b00000001));
 
     // Set baudrate
-    volatile_store(UBRR0H,000000110);
-    volatile_store(UBRR0L,0110);
+    volatile_store(UBRR0H,0);
+    volatile_store(UBRR0L,0b00001100);
 
     set_bit(PORTD, 2, true);
     arduino_hal::delay_ms(800);
