@@ -1,4 +1,4 @@
-use core::intrinsics::volatile_store;
+use core::ptr::write_volatile;
 
 
 // USART stuff
@@ -19,6 +19,6 @@ pub unsafe fn set_bit(addr: *mut u8, bit: u8, state: bool) {
         true => val = *addr | LS1(bit),
         false => val = *addr & !LS1(bit)
     }
-    volatile_store(addr,val);
+    write_volatile(addr,val);
 }
 

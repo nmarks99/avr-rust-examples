@@ -33,7 +33,8 @@ fn main() -> ! {
         usart::usart_init();
         // set_bit(PORTD, 2, true); // set low
 
-        let msg1: char = '2';
+        let msg1: char = 'h';
+        let nl: char = '\n';
         let mut count:u8  = 0;
         loop {
             if count % 2 == 0 {
@@ -41,8 +42,9 @@ fn main() -> ! {
             } else{
                 set_bit(PORTD, 2, false);
             }
-
-            usart::write_usart(msg1);
+            
+            usart::usart_send_byte(msg1);
+            usart::usart_send_byte(nl);
             arduino_hal::delay_ms(1000);
             if count == 254 {
                 count = 0;
