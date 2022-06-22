@@ -28,16 +28,28 @@ fn main() -> ! {
         // let mut led = pins.d2.into_output();
         // led.set_low();
         
-        usart::usart_init();
         
         set_bit(DDRD, 2, true); // set as output
-        set_bit(PORTD, 2, true); // set low
+        usart::usart_init();
+        // set_bit(PORTD, 2, true); // set low
 
-        let msg1: u8 = 22;
+        let msg1: char = '2';
+        let mut count:u8  = 0;
         loop {
-            arduino_hal::delay_ms(1000);
+            if count % 2 == 0 {
+                set_bit(PORTD, 2, true);
+            } else{
+                set_bit(PORTD, 2, false);
+            }
+
             usart::write_usart(msg1);
             arduino_hal::delay_ms(1000);
+            if count == 254 {
+                count = 0;
+            }
+            count = count + 1;
+
+
         }
     }
 }

@@ -34,13 +34,26 @@ int uart_putchar(char c, FILE *stream) {
     return 0;
 }
 
+
+
+void usart_send_byte() {
+    int val = ( UCSR0A & (1<<UDRE0));
+    while ( !( UCSR0A & (1<<UDRE0)) );
+    UDR0 = val;
+}
+
+
 int main(void) {   
     uart_init();
     stdout = &output;
                 
+    char c = 'h';
+    
     while (1) {
-        printf("%lu\t%lu\n",UBRRH_VALUE,UBRRL_VALUE);       
+        // printf("%lu\t%lu\n",UBRRH_VALUE,UBRRL_VALUE);
+        usart_send_byte();
         _delay_ms(500);    
     }
+
     return 0;
 }
