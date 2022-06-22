@@ -17,6 +17,7 @@ mod utils; use utils::*;
 mod usart;
 
 
+
 #[arduino_hal::entry]
 fn main() -> ! {
     unsafe {
@@ -24,9 +25,9 @@ fn main() -> ! {
         set_bit(DDRD, 2, true); // set as output
         usart::usart_init();
         // set_bit(PORTD, 2, true); // set low
-        let msg1: &str = "hello";
+        let msg: &str = "hello\r\n";
         loop {
-            usart::usart_println(msg1);
+            usart::usart_print(msg);
             arduino_hal::delay_ms(1000);
         }
     }

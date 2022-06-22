@@ -1,27 +1,30 @@
-// use utils::*;
+use utils::*;
 use atmega328p::*;
 use core::ptr::read_volatile;
 use core::ptr::write_volatile;
 // use core::ptr;
 
 
-pub unsafe fn usart_init() {
-    // set_bit(UCSR0A,0x2,false); // sets bit 1, the second bit (U2X0=0x2), to zero
+pub const F_CPU: u32 = 16000000;
+pub const BAUD: u32 = 9600;
+pub const UBRR_VALUE:u32 =  ((F_CPU) + 8 * (BAUD)) / (16 * (BAUD)) -1;
+pub const UBRRL_VALUE:u8 = (UBRR_VALUE & 0xff) as u8;
+pub const UBRRH_VALUE:u8 = (UBRR_VALUE >> 8) as u8;
 
+
+pub unsafe fn usart_init() {
+    
     // Set to 8 bit data size
-    write_volatile(UCSR0C, (1 << 2) | (1 << 1) );
-    // set_bit(UCSR0C,0x1,true); // UCSZ00 = 1
-    // set_bit(UCSR0C,0x2,true); // UCSZ01 = 2
-    // set_bit(UCSR0B,0x3,false); //UCSZ02 = 0
+    set_bit(UCSR0C,0x1,true); // UCSZ00 = 1
+    set_bit(UCSR0C,0x2,true); // UCSZ01 = 2
 
     // Enable receiver and transitter
-    write_volatile(UCSR0B, 1 << 3 );
-    // set_bit(UCSR0B,0x4,true); // Tx enable
-    // set_bit(UCSR0B,0x5,true); // Rx enable
+    set_bit(UCSR0B,0x3,true); // Tx enable
+    set_bit(UCSR0B,0x4,true); // Rx enable
 
     // Set baudrate
-    let UBRRH_VALUE:u8 = 0b00000000;
-    let UBRRL_VALUE:u8 = 0b01100111;
+    // let UBRRH_VALUE:u8 = 0b00000000;
+    // let UBRRL_VALUE:u8 = 0b01100111;
     write_volatile(UBRR0H,UBRRH_VALUE);
     write_volatile(UBRR0L,UBRRL_VALUE);
 }
@@ -35,15 +38,14 @@ unsafe fn is_ready() -> bool {
 }
 
 unsafe fn usart_send_byte(c:char) {
+    // Writes a single byte to usart buffer if its ready
     loop{ if is_ready() {break} } // do nothing until tx buffer is ready
     write_volatile(UDR0,c as u8); // when its ready, store character in tx buffer
 }
 
-pub unsafe fn usart_println(msg: &str) {
+pub unsafe fn usart_print(msg: &str) {
     // set_bit(PORTD,2,true);
     for c in msg.chars() {
         usart_send_byte(c);
     }
-    usart_send_byte('\r');
-    usart_send_byte('\n');
 }

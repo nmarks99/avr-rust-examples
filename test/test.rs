@@ -1,11 +1,10 @@
 
+
 fn main() {
-
-    const SYS_CLK: i32 = 1000000;
-    const BAUD: i32 = 921600;
-    const MY_UBRR: i32 = (SYS_CLK/(16*BAUD)) - 1;
-
-    println!("MY_UBRR = {}",MY_UBRR);
-    println!("BAUD = {}",BAUD);
-
+    let F_CPU: u32 = 16000000;
+    let BAUD: u32 = 9600;
+    let UBRR_VALUE:u32 =  ((F_CPU) + 8 * (BAUD)) / (16 * (BAUD)) -1;
+    let UBRRL_VALUE:u8 = (UBRR_VALUE & 0xff) as u8;
+    let UBRRH_VALUE:u8 = (UBRR_VALUE >> 8) as u8;
+    println!("{:?}\n{:?}",UBRRL_VALUE,UBRRH_VALUE);
 }
