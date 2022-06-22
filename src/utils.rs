@@ -1,6 +1,5 @@
 use core::ptr::write_volatile;
 
-
 // USART stuff
 // pub const F_CPU: u32 = 16000000;
 // pub const BAUD: u32 = 9600;
@@ -14,6 +13,7 @@ pub fn LS1(bit: u8) -> u8 {
 }
 
 pub unsafe fn set_bit(addr: *mut u8, bit: u8, state: bool) {
+    // sets 'bit' at address 'addr' to 1 ('state' = true) or 0 ('state' = false)
     let val: u8;
     match state {
         true => val = *addr | LS1(bit),
@@ -21,4 +21,7 @@ pub unsafe fn set_bit(addr: *mut u8, bit: u8, state: bool) {
     }
     write_volatile(addr,val);
 }
+
+
+
 

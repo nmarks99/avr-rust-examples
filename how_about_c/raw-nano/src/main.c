@@ -36,22 +36,28 @@ int uart_putchar(char c, FILE *stream) {
 
 
 
-void usart_send_byte() {
-    int val = ( UCSR0A & (1<<UDRE0));
+void usart_send_byte(char val) {
     while ( !( UCSR0A & (1<<UDRE0)) );
     UDR0 = val;
 }
 
+void usart_send_str(char *str, uint16_t len) {
+    
+    int i;
+    for (i = 0; i < len; i++){
+        usart_send_byte(str[i]);
+    }
+
+}
 
 int main(void) {   
     uart_init();
     stdout = &output;
-                
-    char c = 'h';
-    
+                    
+    char msg[] = "hello\n";
     while (1) {
         // printf("%lu\t%lu\n",UBRRH_VALUE,UBRRL_VALUE);
-        usart_send_byte();
+        usart_send_str(msg,6);
         _delay_ms(500);    
     }
 
