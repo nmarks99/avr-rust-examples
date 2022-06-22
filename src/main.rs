@@ -31,13 +31,13 @@ fn main() -> ! {
         usart::usart_init();
         
         set_bit(DDRD, 2, true); // set as output
-        set_bit(PORTD, 2, false); // set low
+        set_bit(PORTD, 2, true); // set low
 
-        let msg1: char = '1';
+        let msg1: u8 = 22;
         loop {
-            arduino_hal::delay_ms(500);
-            usart::write_usart(&msg1);
-            arduino_hal::delay_ms(500);
+            arduino_hal::delay_ms(1000);
+            usart::write_usart(msg1);
+            arduino_hal::delay_ms(1000);
         }
     }
 }
