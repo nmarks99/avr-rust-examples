@@ -36,11 +36,8 @@ unsafe fn usart_is_ready() -> bool {
 }
 
 pub unsafe fn usart_send_byte(c:char) {
-
-    loop{
-        if usart_is_ready() {break}
-    }
-    write_volatile(UDR0,c as u8);
+    loop{ if usart_is_ready() {break} } // do nothing until tx buffer is ready
+    write_volatile(UDR0,c as u8); // when its ready, store character in tx buffer
 }
 
 
