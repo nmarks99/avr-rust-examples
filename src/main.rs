@@ -27,18 +27,16 @@ fn main() -> ! {
     unsafe {
 
         D2.set_output();
+        D2.high();
         usart::usart_init(); 
 
-        let msg: &str = "hello\r\n";
-        let mut count:u32 = 0;
         loop {
-            if count % 2 == 0 {
-                D2.high();
-            } else {D2.low()}
-            usart::usart_print(msg);
+            // let rx_msg: char = usart::read();
+            // let mut a = [0; 2];
+            // let m = rx_msg.encode_utf8(&mut a);
+            // usart::print(m);
+            usart::print("Howdy\r\n");
             arduino_hal::delay_ms(1000);
-            count += 1;
-
         }
     }
 }
