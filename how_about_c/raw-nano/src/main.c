@@ -42,8 +42,9 @@ char read_byte(){
     return UDR0;
 }
 
-void read_str(char *buff,char EOL_char) {
+void read_str(char *buff) {
     size_t i = 0;
+    char EOL_char = '\n';
     while(1){
         char temp_byte = read_byte();
         if (temp_byte != EOL_char) {
@@ -57,12 +58,13 @@ int main(void) {
     uart_init();
     DDRD |= (1 << 2);   
     usart_send_str("Begin\n",6);
-    char buff[100];
 
+    char buff[100];
     while (1) {
-        read_str(buff,'\0');
+        read_str(buff);
         usart_send_str(buff,strlen(buff));
-        _delay_ms(500);
+        usart_send_byte('\n');
+        memset(buff,0,sizeof(buff));
     }
 
     return 0;
