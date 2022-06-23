@@ -2,5 +2,5 @@
 import serial
 ser = serial.Serial('/dev/ttyUSB0')
 print(ser.name)
-ser.write(b'A')
+ser.write(b'hello\0')
 ser.close()

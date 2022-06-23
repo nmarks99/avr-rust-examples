@@ -1,5 +1,7 @@
 #include <avr/io.h>
 #include <stdio.h>
+#include <string.h>
+
 
 #ifndef F_CPU
 #define F_CPU 16000000UL
@@ -35,35 +37,32 @@ void usart_send_str(char *str, uint16_t len) {
 }
 
 
-char read(){
+char read_byte(){
     while ( !(UCSR0A & (1<<RXC0))) {}
     return UDR0;
+}
+
+void read_str(char *buff,char EOL_char) {
+    size_t i = 0;
+    while(1){
+        char temp_byte = read_byte();
+        if (temp_byte != EOL_char) {
+            buff[i] = temp_byte;
+            i ++;
+        } else { break; }
+    }
 }
 
 int main(void) {   
     uart_init();
     DDRD |= (1 << 2);   
     usart_send_str("Begin\n",6);
-    while (1) {
+    char buff[100];
 
-        char val = read();
-        if (val == 'A'){
-            PORTD |= (1 << PORTD2);
-            _delay_ms(200);
-            PORTD &= !(1 << PORTD2);        
-            _delay_ms(200);
-            usart_send_str("Got an A!\r\n",11);
-        }
-        else if (val == 'B'){
-            PORTD |= (1 << PORTD2);
-            _delay_ms(200);
-            PORTD &= !(1 << PORTD2);        
-            _delay_ms(200);
-            usart_send_str("Got a B!\r\n",11);
-        } 
-        else{
-            usart_send_str("hmm\r\n",5);
-        }
+    while (1) {
+        read_str(buff,'\0');
+        usart_send_str(buff,strlen(buff));
+        _delay_ms(500);
     }
 
     return 0;
