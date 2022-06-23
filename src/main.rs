@@ -18,9 +18,6 @@ fn panic(_info: &PanicInfo) -> ! {
 }
 
 
-
-
-
 #[arduino_hal::entry]
 fn main() -> ! {
 
@@ -31,12 +28,16 @@ fn main() -> ! {
         usart::usart_init(); 
 
         loop {
-            // let rx_msg: char = usart::read();
-            // let mut a = [0; 2];
-            // let m = rx_msg.encode_utf8(&mut a);
-            // usart::print(m);
-            usart::print("Howdy\r\n");
-            arduino_hal::delay_ms(1000);
+            let val: char = usart::read();
+            if val == 'A' {
+                D2.low();
+                arduino_hal::delay_ms(500);
+                D2.high();
+                usart::print("Got an A\r\n");
+            }
+            else {
+                usart::print("Got something else\r\n");                
+            }
         }
     }
 }

@@ -13,28 +13,12 @@
 
 #include <util/setbaud.h>
 
-int uart_putchar(char, FILE*);
-void uart_init();
-
-FILE output = FDEV_SETUP_STREAM(uart_putchar, NULL, _FDEV_SETUP_WRITE);
-
 void uart_init(void) {
     UBRR0H = UBRRH_VALUE; // 0
     UBRR0L = UBRRL_VALUE; // 103
     UCSR0C = (1<<UCSZ01) | (1<<UCSZ00); /* 8-bit data */ 
-    UCSR0B = (1<<TXEN0);   /* Enable TX */    
+    UCSR0B = (1 << TXEN0) | (1 << RXEN0); // Enable TX and RX
 }
-
-int uart_putchar(char c, FILE *stream) {
-    if (c == '\n') {
-        uart_putchar('\r', stream);
-    }
-    loop_until_bit_is_set(UCSR0A, UDRE0);
-    UDR0 = c;
-    return 0;
-}
-
-
 
 void usart_send_byte(char val) {
     while ( !( UCSR0A & (1<<UDRE0)) );
@@ -50,15 +34,36 @@ void usart_send_str(char *str, uint16_t len) {
 
 }
 
+
+char read(){
+    while ( !(UCSR0A & (1<<RXC0))) {}
+    return UDR0;
+}
+
 int main(void) {   
     uart_init();
-    stdout = &output;
-                    
-    char msg[] = "hello\n";
+    DDRD |= (1 << 2);   
+    usart_send_str("Begin\n",6);
     while (1) {
-        // printf("%lu\t%lu\n",UBRRH_VALUE,UBRRL_VALUE);
-        usart_send_str(msg,6);
-        _delay_ms(500);    
+
+        char val = read();
+        if (val == 'A'){
+            PORTD |= (1 << PORTD2);
+            _delay_ms(200);
+            PORTD &= !(1 << PORTD2);        
+            _delay_ms(200);
+            usart_send_str("Got an A!\r\n",11);
+        }
+        else if (val == 'B'){
+            PORTD |= (1 << PORTD2);
+            _delay_ms(200);
+            PORTD &= !(1 << PORTD2);        
+            _delay_ms(200);
+            usart_send_str("Got a B!\r\n",11);
+        } 
+        else{
+            usart_send_str("hmm\r\n",5);
+        }
     }
 
     return 0;
