@@ -1,2 +1,2 @@
-# rusty-drone
-A quadcopter drone built from scratch with a flight controller written in Rust
+# nano-hal
+A simple hardware abstraction layer written (mostly) from scratch for the ATMega328p microcontroller/Arduino Nano board 
