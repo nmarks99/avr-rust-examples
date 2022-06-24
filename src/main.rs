@@ -28,7 +28,7 @@ fn main() -> ! {
         usart::usart_init(); 
         usart::println("Begin");
         loop {
-            let mut buff = [None;30];
+            let mut buff = [None;50];
             let r = usart::readln(&mut buff);
             for i in r.iter() {
                 match i {

@@ -25,6 +25,20 @@ pub unsafe fn usart_init() {
 }
 
 
+
+// pub struct UsartVal {
+//     buffer: &mut [Option<u8>];
+// }
+
+// // impl UsartVal {
+// //     pub fn to_str(&self) {
+
+// //     }
+// // }
+
+
+
+
 pub unsafe fn readln(buff: &mut [Option<u8>]) -> &mut [Option<u8>] {
     let EOL_char: u8 = '\n' as u8;
     for i in 0..buff.len() {
@@ -44,6 +58,11 @@ pub unsafe fn println(msg: &str) {
     }
     send_byte('\n' as u8);
 }
+
+
+
+
+
 
 
 
