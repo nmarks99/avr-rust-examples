@@ -25,11 +25,10 @@ fn main() -> ! {
     unsafe {
 
         D2.set_output();
-        D2.high();
         usart::usart_init(); 
         usart::println("Begin");
-        let mut buff = [None;30];
         loop {
+            let mut buff = [None;30];
             let r = usart::readln(&mut buff);
             for i in r.iter() {
                 match i {
