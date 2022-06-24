@@ -6,7 +6,9 @@ ser = serial.Serial('/dev/ttyUSB0')
 try:
     while True:
         msg = input(">> ");
-        ser.write(b'{}\n'.format(msg))
+        "{}".format(msg)
+        ser.write(msg.encode(encoding='UTF-8'))
+        ser.write(b'\n')
 except KeyboardInterrupt: 
     ser.close()
     

@@ -9,6 +9,7 @@ mod utils;
 mod usart;
 
 use utils::*;
+// extern crate heapless;
 
 // Define panic handler
 use core::{panic::PanicInfo};
@@ -26,18 +27,18 @@ fn main() -> ! {
         D2.set_output();
         D2.high();
         usart::usart_init(); 
-
+        usart::println("Begin");
+        let mut buff = [None;30];
         loop {
-            let val: char = usart::read();
-            if val == 'A' {
-                D2.low();
-                arduino_hal::delay_ms(500);
-                D2.high();
-                usart::print("Got an A\r\n");
+            let r = usart::readln(&mut buff);
+            for i in r.iter() {
+                match i {
+                    Some(c) => usart::send_byte(*c),
+                    None => break
+                }
             }
-            else {
-                usart::print("Got something else\r\n");                
-            }
+            usart::send_byte('\n' as u8);
         }
+
     }
 }
