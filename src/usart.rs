@@ -1,3 +1,13 @@
+
+/* EXAMPLE: Read USART, print back out whatever was recieved 
+
+let mut buff = [None;BUFF_SIZE];
+usart::readln(&mut buff);
+usart::println_recieved(&mut buff);
+
+*/
+
+
 use utils::*;
 use atmega328p::*;
 use core::ptr::read_volatile;
@@ -8,7 +18,6 @@ pub const BAUD: u32 = 9600;
 pub const UBRR_VALUE:u32 =  ((F_CPU) + 8 * (BAUD)) / (16 * (BAUD)) -1;
 pub const UBRRL_VALUE:u8 = (UBRR_VALUE & 0xff) as u8;
 pub const UBRRH_VALUE:u8 = (UBRR_VALUE >> 8) as u8;
-
 
 pub unsafe fn usart_init() {   
     // Set to 8 bit data size
