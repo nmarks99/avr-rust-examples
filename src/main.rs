@@ -28,8 +28,8 @@ fn main() -> ! {
         usart::println("Begin");
         loop {
             let mut buff = [None;50];
-            let r = usart::readln(&mut buff);
-            for i in r.iter() {
+            usart::readln(&mut buff);
+            for i in buff.iter() {
                 match i {
                     Some(c) => usart::send_byte(*c),
                     None => break

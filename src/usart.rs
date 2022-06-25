@@ -39,7 +39,7 @@ pub unsafe fn usart_init() {
 
 
 
-pub unsafe fn readln(buff: &mut [Option<u8>]) -> &mut [Option<u8>] {
+pub unsafe fn readln(buff: &mut [Option<u8>]) {
     let EOL_char: u8 = '\n' as u8;
     for i in 0..buff.len() {
         let new_byte = read_byte();
@@ -48,7 +48,6 @@ pub unsafe fn readln(buff: &mut [Option<u8>]) -> &mut [Option<u8>] {
         } 
         else { break }
     }
-    buff
 }
 
 
@@ -58,13 +57,6 @@ pub unsafe fn println(msg: &str) {
     }
     send_byte('\n' as u8);
 }
-
-
-
-
-
-
-
 
 
 /* Private USART Functions */
