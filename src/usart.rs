@@ -36,7 +36,15 @@ pub unsafe fn usart_init() {
 // //     }
 // // }
 
-
+pub fn print_recieved(buff: &mut [Option<u8>]) {
+    for i in buff.iter() {
+        match i {
+            Some(c) => unsafe { send_byte(*c) },
+            None => break
+        }
+    }
+    unsafe { send_byte('\n' as u8) };
+}
 
 
 pub unsafe fn readln(buff: &mut [Option<u8>]) {
