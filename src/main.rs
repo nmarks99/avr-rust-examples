@@ -9,7 +9,6 @@ mod utils;
 mod usart;
 
 use utils::*;
-// extern crate heapless;
 
 // Define panic handler
 use core::{panic::PanicInfo};
