@@ -30,13 +30,6 @@ fn main() -> ! {
             let mut buff = [None;50];
             usart::readln(&mut buff);
             usart::print_recieved(&mut buff);
-            // for i in buff.iter() {
-            //     match i {
-            //         Some(c) => usart::send_byte(*c),
-            //         None => break
-            //     }
-            // }
-            // usart::send_byte('\n' as u8);
         }
 
     }
