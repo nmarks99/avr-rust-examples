@@ -18,18 +18,20 @@ fn panic(_info: &PanicInfo) -> ! {
 }
 
 
+const BUFF_SIZE: usize = 50;
+
 #[arduino_hal::entry]
 fn main() -> ! {
 
     unsafe {
 
-        D2.set_output();
+        D7.set_output();
+        D7.high();
         usart::usart_init(); 
-        usart::println("Begin");
         loop {
-            let mut buff = [None;50];
-            usart::readln(&mut buff);
-            usart::print_recieved(&mut buff);
+            // let mut buff = [None;BUFF_SIZE];
+            // usart::readln(&mut buff);
+            // usart::println_recieved(&mut buff);
         }
 
     }

@@ -9,7 +9,7 @@ pub const UBRR_VALUE:u32 =  ((F_CPU) + 8 * (BAUD)) / (16 * (BAUD)) -1;
 pub const UBRRL_VALUE:u8 = (UBRR_VALUE & 0xff) as u8;
 pub const UBRRH_VALUE:u8 = (UBRR_VALUE >> 8) as u8;
 
-/* Public USART functions */ 
+
 pub unsafe fn usart_init() {   
     // Set to 8 bit data size
     set_bit(UCSR0C,0x1,true); // UCSZ00 = 1
@@ -22,28 +22,6 @@ pub unsafe fn usart_init() {
     // Set baudrate
     write_volatile(UBRR0H,UBRRH_VALUE);
     write_volatile(UBRR0L,UBRRL_VALUE);
-}
-
-
-
-// pub struct UsartVal {
-//     buffer: &mut [Option<u8>];
-// }
-
-// // impl UsartVal {
-// //     pub fn to_str(&self) {
-
-// //     }
-// // }
-
-pub fn print_recieved(buff: &mut [Option<u8>]) {
-    for i in buff.iter() {
-        match i {
-            Some(c) => unsafe { send_byte(*c) },
-            None => break
-        }
-    }
-    unsafe { send_byte('\n' as u8) };
 }
 
 
@@ -66,8 +44,20 @@ pub unsafe fn println(msg: &str) {
     send_byte('\n' as u8);
 }
 
+pub fn println_recieved(buff: &mut [Option<u8>]) {
+    // Print out buffer read over usart by line
+    // "None" elements at end of array are ignored
+    for i in buff.iter() {
+        match i {
+            Some(c) => unsafe { send_byte(*c) },
+            None => break
+        }
+    }
+    unsafe { send_byte('\n' as u8) };
+}
 
-/* Private USART Functions */
+
+
 unsafe fn tx_is_ready() -> bool {
     // Check if the UDRE0 field in UCSR0A register is 1 (ready) or 0 (not ready)
     // UDRE0 = 0x20 = 0b00100000
@@ -85,7 +75,7 @@ unsafe fn rx_is_ready() -> bool {
 }
 
 
-pub unsafe fn send_byte(c: u8) {
+unsafe fn send_byte(c: u8) {
     // Writes a single byte to usart buffer if its ready
     loop{ if tx_is_ready(){ break } } // do nothing until tx buffer is ready
     write_volatile(UDR0,c as u8); // when its ready, store character in tx buffer

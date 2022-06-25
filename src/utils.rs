@@ -1,5 +1,5 @@
 use core::ptr::write_volatile;
-// use core::ptr::read_volatile;
+use core::ptr::read_volatile;
 use atmega328p::*;
 
 
@@ -18,11 +18,6 @@ pub unsafe fn set_bit(addr: *mut u8, bit: u8, state: bool) {
     write_volatile(addr,val);
 }
 
-// pub unsafe fn read_bit(addr: *mut u8, bit: u8) -> u8 {
-//     p_addr = read_volatile(addr);
-
-// }
-
 
 /* GPIO pin definitions */
 pub struct Pin {
@@ -32,6 +27,7 @@ pub struct Pin {
 }
 
 impl Pin {
+
     pub unsafe fn high(&self) {
        set_bit(self.port,self.bit,true); 
     }
@@ -53,11 +49,10 @@ impl Pin {
     }
 }
 
-
-// Example of defining pin D2:
-// Define a pin by supplying the
-// - Data register port (e.g. PORTD)
-// - Bit corresponding to the desired pin (e.g. "2")
-// - Data direction register (e.g. DDRD)
+/* Digital pins */
 pub const D2: Pin = Pin { port: PORTD, bit: 2, ddr: DDRD };
-
+pub const D3: Pin = Pin { port: PORTD, bit: 3, ddr: DDRD };
+pub const D4: Pin = Pin { port: PORTD, bit: 4, ddr: DDRD };
+pub const D5: Pin = Pin { port: PORTD, bit: 5, ddr: DDRD };
+pub const D6: Pin = Pin { port: PORTD, bit: 6, ddr: DDRD };
+pub const D7: Pin = Pin { port: PORTD, bit: 7, ddr: DDRD };
