@@ -1,5 +1,4 @@
 use core::ptr::write_volatile;
-use core::ptr::read_volatile;
 use atmega328p::*;
 
 
@@ -44,9 +43,6 @@ impl Pin {
         set_bit(self.ddr, self.bit, false)
     }
 
-    pub unsafe fn toggle(&self) {
-        
-    }
 }
 
 /* Digital pins */
