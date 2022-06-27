@@ -66,3 +66,6 @@ pub const A2: Pin = Pin { port: PORTC, bit: 2, ddr: DDRC };
 pub const A3: Pin = Pin { port: PORTC, bit: 3, ddr: DDRC };
 pub const A4: Pin = Pin { port: PORTC, bit: 4, ddr: DDRC };
 pub const A5: Pin = Pin { port: PORTC, bit: 5, ddr: DDRC };
+
+/* I2C */
+// pub const SDA: Pin = Pin {por  }
