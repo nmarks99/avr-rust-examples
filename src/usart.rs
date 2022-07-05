@@ -13,7 +13,7 @@ use atmega328p::*;
 use core::ptr::read_volatile;
 use core::ptr::write_volatile;
 
-pub const F_CPU: u32 = 16000000;
+
 pub const BAUD: u32 = 9600;
 pub const UBRR_VALUE:u32 =  ((F_CPU) + 8 * (BAUD)) / (16 * (BAUD)) -1;
 pub const UBRRL_VALUE:u8 = (UBRR_VALUE & 0xff) as u8;

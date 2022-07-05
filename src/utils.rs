@@ -1,6 +1,7 @@
 use core::ptr::write_volatile;
 use atmega328p::*;
 
+pub const F_CPU: u32 = 16000000;
 
 pub fn _BV(bit: u8) -> u8 {
     // Left shifts 1 the specfied amount
