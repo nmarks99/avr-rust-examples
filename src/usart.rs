@@ -19,7 +19,7 @@ pub const UBRR_VALUE:u32 =  ((F_CPU) + 8 * (BAUD)) / (16 * (BAUD)) -1;
 pub const UBRRL_VALUE:u8 = (UBRR_VALUE & 0xff) as u8;
 pub const UBRRH_VALUE:u8 = (UBRR_VALUE >> 8) as u8;
 
-pub unsafe fn usart_init() {   
+pub unsafe fn init() {   
     // Set to 8 bit data size
     set_bit(UCSR0C,0x1,true); // UCSZ00 = 1
     set_bit(UCSR0C,0x2,true); // UCSZ01 = 2
@@ -53,7 +53,7 @@ pub unsafe fn println(msg: &str) {
     send_byte('\n' as u8);
 }
 
-pub fn println_recieved(buff: &mut [Option<u8>]) {
+pub unsafe fn println_recieved(buff: &mut [Option<u8>]) {
     // Print out buffer read over usart by line
     // "None" elements at end of array are ignored
     for i in buff.iter() {

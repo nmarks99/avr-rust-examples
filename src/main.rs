@@ -28,7 +28,7 @@ fn main() -> ! {
 
         D8.set_output();
         D8.high();
-        usart::usart_init(); 
+        usart::init(); 
         loop {
             let mut buff = [None;BUFF_SIZE];
             usart::readln(&mut buff);
