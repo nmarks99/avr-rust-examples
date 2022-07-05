@@ -17,6 +17,7 @@ fn panic(_info: &PanicInfo) -> ! {
 mod atmega328p;
 mod utils; 
 mod usart;
+mod i2c;
 use utils::*;
 
 const BUFF_SIZE: usize = 50;
