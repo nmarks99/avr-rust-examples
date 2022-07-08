@@ -14,56 +14,56 @@ pub unsafe fn init() {
     write_volatile(TWBR, 0x0C); // 0x0C = 12, 16000000/(16+(2*12)) = 400 kHz
     
     // Enable TWI
-    set_bit(TWCR, TWEN, true)
+    set_bit(TWCR, *TWEN, true)
 }
 
 pub unsafe fn start() {
-    set_bit(TWCR, TWINT, true);
-    set_bit(TWCR, TWSTA, true);
-    set_bit(TWCR, TWEN, true);
+    set_bit(TWCR, *TWINT, true);
+    set_bit(TWCR, *TWSTA, true);
+    set_bit(TWCR, *TWEN, true);
 
-    while ( read_volatile(TWRC) & _BV(TWINT) ) == 0 {
+    while ( read_volatile(TWCR) & _BV(*TWINT) ) == 0 {
         // wait until TWINT resets to zero
     }
 }
 
 pub unsafe fn stop() {
-    set_bit(TWCR, TWINT, true);
-    set_bit(TWCR, TWSTO, true);
-    set_bit(TWCR, TWEN, true);
+    set_bit(TWCR, *TWINT, true);
+    set_bit(TWCR, *TWSTO, true);
+    set_bit(TWCR, *TWEN, true);
 }
 
 pub unsafe fn write(data: u8) {
     write_volatile(TWDR, data);
-    set_bit(TWCR, TWINT, true);
-    set_bit(TWCR, TWEN, true);
+    set_bit(TWCR, *TWINT, true);
+    set_bit(TWCR, *TWEN, true);
 
-    while ( read_volatile(TWRC) & _BV(TWINT) ) == 0 {
+    while ( read_volatile(TWCR) & _BV(*TWINT) ) == 0 {
         // wait until TWINT resets to zero
     }
 }
 
 pub unsafe fn read_ACK() -> u8 {
-    set_bit(TWCR, TWINT, true);
-    set_bit(TWCR, TWEN, true);
-    set_bit(TWCR, TWEA, true);
-    while ( read_volatile(TWRC) & _BV(TWINT) ) == 0 {
+    set_bit(TWCR, *TWINT, true);
+    set_bit(TWCR, *TWEN, true);
+    set_bit(TWCR, *TWEA, true);
+    while ( read_volatile(TWCR) & _BV(*TWINT) ) == 0 {
         // wait until TWINT resets to zero
     }
-    read_volatile(TWDR);
+    read_volatile(TWDR)
 }
 
-pub unsafe fn read_NACK -> u8 {
-    set_bit(TWCR, TWINT, true);
-    set_bit(TWCR, TWEN, true);
-    while ( read_volatile(TWRC) & _BV(TWINT) ) == 0 {
+pub unsafe fn read_NACK() -> u8 {
+    set_bit(TWCR, *TWINT, true);
+    set_bit(TWCR, *TWEN, true);
+    while ( read_volatile(TWCR) & _BV(*TWINT) ) == 0 {
         // wait until TWINT resets to zero
     }
-    read_volatile(TWDR);
+    read_volatile(TWDR)
 }
 
 pub unsafe fn get_status() -> u8 {
-    let mut status: u8;
+    let status: u8;
     
     // Mask status
     status = read_volatile(TWSR) & 0xF8;
