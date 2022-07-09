@@ -58,11 +58,11 @@ pub unsafe fn println_recieved(buff: &mut [Option<u8>]) {
     // "None" elements at end of array are ignored
     for i in buff.iter() {
         match i {
-            Some(c) => unsafe { send_byte(*c) },
+            Some(c) => send_byte(*c),
             None => break
         }
     }
-    unsafe { send_byte('\n' as u8) };
+    send_byte('\n' as u8);
 }
 
 
