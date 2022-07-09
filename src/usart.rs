@@ -14,7 +14,7 @@ use core::ptr::read_volatile;
 use core::ptr::write_volatile;
 
 
-pub const BAUD: u32 = 9600;
+pub const BAUD: u32 = 115200;
 pub const UBRR_VALUE:u32 =  ((F_CPU) + 8 * (BAUD)) / (16 * (BAUD)) -1;
 pub const UBRRL_VALUE:u8 = (UBRR_VALUE & 0xff) as u8;
 pub const UBRRH_VALUE:u8 = (UBRR_VALUE >> 8) as u8;

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import serial
-ser = serial.Serial('/dev/ttyUSB0')
+ser = serial.Serial('/dev/ttyUSB0',baudrate=115200)
 
 
 try:
