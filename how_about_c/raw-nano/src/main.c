@@ -54,17 +54,34 @@ void read_str(char *buff) {
     }
 }
 
+uint8_t read_pin_d2() {
+    if ( (PINB & (1 << PINB4)) == (1 << PINB4) ) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+
+
 int main(void) {   
     uart_init();
-    DDRD |= (1 << 2);   
+    // DDRD |= (1 << 2);   
+    DDRB &= ~(1 << PINB4);
     usart_send_str("Begin\n",6);
 
-    char buff[100];
+    // char buff[100];
     while (1) {
-        read_str(buff);
-        usart_send_str(buff,strlen(buff));
-        usart_send_byte('\n');
-        memset(buff,0,sizeof(buff));
+        // read_str(buff);
+        // usart_send_str(buff,strlen(buff));
+        // usart_send_byte('\n');
+        // memset(buff,0,sizeof(buff));
+        if ( read_pin_d2() == 1){
+            usart_send_str("High\n",5);
+        }
+        else {
+            usart_send_str("Low\n",5);
+        }
     }
 
     return 0;

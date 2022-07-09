@@ -4,6 +4,12 @@
 #![allow(dead_code)]
 #![allow(non_snake_case)]
 
+mod atmega328p;
+mod utils; 
+mod usart;
+mod i2c;
+mod gpio;
+
 // Define panic handler
 use core::{panic::PanicInfo};
 #[panic_handler]
@@ -13,28 +19,29 @@ fn panic(_info: &PanicInfo) -> ! {
 
 
 
-
-mod atmega328p;
-mod utils; 
-mod usart;
-mod i2c;
-use utils::*;
+use gpio::*;
 
 const BUFF_SIZE: usize = 50;
 
 #[arduino_hal::entry]
 fn main() -> ! {
-
     unsafe {
 
-        D8.set_output();
-        D8.high();
-        usart::init(); 
+        D2.set_input();
+        D3.set_output();
         loop {
-            let mut buff = [None;BUFF_SIZE];
-            usart::readln(&mut buff);
-            usart::println_recieved(&mut buff);
+            
+            if D2.read() == true {
+                D3.high();
+            }
+            else {
+                D3.low();
+            }
+            // arduino_hal::delay_ms(50);
         }
+
+
+
 
     }
 }

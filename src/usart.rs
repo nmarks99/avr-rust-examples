@@ -53,6 +53,13 @@ pub unsafe fn println(msg: &str) {
     send_byte('\n' as u8);
 }
 
+
+pub unsafe fn print(msg: &str) {
+    for c in msg.chars() {
+        send_byte(c as u8);
+    }
+}
+
 pub unsafe fn println_recieved(buff: &mut [Option<u8>]) {
     // Print out buffer read over usart by line
     // "None" elements at end of array are ignored
