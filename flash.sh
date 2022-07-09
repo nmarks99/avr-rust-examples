@@ -10,10 +10,12 @@
 # also need this version of nightly for some reason
 # rustup override set nightly-2021-01-07
 
+# finally you will need avrdude
+
+
+
 # Check if this is a rust project
 # Presumably if there is a Cargo.toml file this is rust...
-
-
 if [ -f "./Cargo.toml" ]; then
 
     echo "Building in release mode"
