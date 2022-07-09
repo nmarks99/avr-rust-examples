@@ -1,6 +1,9 @@
 use core::ptr::write_volatile;
 
 pub const F_CPU: u32 = 16000000;
+pub const HIGH: bool = true;
+pub const LOW: bool = false;
+
 
 pub fn _BV(bit: u8) -> u8 {
     // Left shifts 1 the specfied amount

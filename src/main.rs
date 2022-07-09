@@ -21,26 +21,20 @@ fn panic(_info: &PanicInfo) -> ! {
 
 use gpio::*;
 
-const BUFF_SIZE: usize = 50;
-
 #[arduino_hal::entry]
 fn main() -> ! {
     unsafe {
 
-        usart::init();
-        D12.set_input();
-        D3.set_output();
+        let button = D12_INPUT;
+        let led = D3_OUTPUT;
         loop {
-            if D12.read() == true {
-                D3.high()
+            if button.read() == true {
+                led.high();
             }
             else {
-                D3.low();
+                led.low();
             }
         }
-
-
-
 
     }
 }

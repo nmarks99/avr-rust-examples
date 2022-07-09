@@ -45,7 +45,6 @@ pub unsafe fn readln(buff: &mut [Option<u8>]) {
     }
 }
 
-
 pub unsafe fn println(msg: &str) {
     for c in msg.chars() {
         send_byte(c as u8);

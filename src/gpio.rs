@@ -10,6 +10,7 @@ pub struct Pin {
 
 impl Pin {
 
+
     pub unsafe fn high(&self) {
        set_bit(self.port,self.bit,true); 
     }
@@ -18,13 +19,13 @@ impl Pin {
         set_bit(self.port,self.bit,false); 
     }
 
-    // pub unsafe fn set_output(&self) {
-    //     set_bit(self.ddr, self.bit, true)
-    // }
+    pub unsafe fn set_output(&self) {
+        set_bit(self.ddr, self.bit, true)
+    }
 
-    // pub unsafe fn set_input(&self) {
-    //     set_bit(self.ddr, self.bit, false)
-    // }
+    pub unsafe fn set_input(&self) {
+        set_bit(self.ddr, self.bit, false)
+    }
 
     pub unsafe fn read(&self) -> bool {
         if (*self.port & (1 << self.bit)) == (1 << self.bit) {
@@ -37,18 +38,43 @@ impl Pin {
 }
 
 /* Digital pins */
-pub const D2: Pin = Pin { port: PORTD, bit: 2, ddr: DDRD };
-pub const D3: Pin = Pin { port: PORTD, bit: 3, ddr: DDRD };
-pub const D4: Pin = Pin { port: PORTD, bit: 4, ddr: DDRD };
-pub const D5: Pin = Pin { port: PORTD, bit: 5, ddr: DDRD };
-pub const D6: Pin = Pin { port: PORTD, bit: 6, ddr: DDRD };
-pub const D7: Pin = Pin { port: PORTD, bit: 7, ddr: DDRD };
-pub const D8: Pin = Pin { port: PORTB, bit: 0, ddr: DDRB };
-pub const D9: Pin = Pin { port: PORTB, bit: 1, ddr: DDRB };
-pub const D10: Pin = Pin { port: PORTB, bit: 2, ddr: DDRB };
-pub const D11: Pin = Pin { port: PORTB, bit: 3, ddr: DDRB };
-pub const D12: Pin = Pin { port: PINB, bit: 4, ddr: DDRB };
-pub const D13: Pin = Pin { port: PORTB, bit: 5, ddr: DDRB };
+pub const D2_INPUT: Pin = Pin { port: PIND, bit: 2, ddr: DDRD };
+pub const D2_OUTPUT: Pin = Pin { port: PORTD, bit: 2, ddr: DDRD };
+
+pub const D3_INPUT: Pin = Pin { port: PIND, bit: 3, ddr: DDRD };
+pub const D3_OUTPUT: Pin = Pin { port: PORTD, bit: 3, ddr: DDRD };
+
+pub const D4_INPUT: Pin = Pin { port: PIND, bit: 4, ddr: DDRD };
+pub const D4_OUTPUT: Pin = Pin { port: PORTD, bit: 4, ddr: DDRD };
+
+pub const D5_INPUT: Pin = Pin { port: PIND, bit: 5, ddr: DDRD };
+pub const D5_OUTPUT: Pin = Pin { port: PORTD, bit: 5, ddr: DDRD };
+
+pub const D6_INPUT: Pin = Pin { port: PIND, bit: 6, ddr: DDRD };
+pub const D6_OUTPUT: Pin = Pin { port: PORTD, bit: 6, ddr: DDRD };
+
+pub const D7_INPUT: Pin = Pin { port: PIND, bit: 7, ddr: DDRD };
+pub const D7_OUTPUT: Pin = Pin { port: PORTD, bit: 7, ddr: DDRD };
+
+pub const D8_INPUT: Pin = Pin { port: PINB, bit: 0, ddr: DDRB };
+pub const D8_OUTPUT: Pin = Pin { port: PORTB, bit: 0, ddr: DDRB };
+
+pub const D9_INPUT: Pin = Pin { port: PINB, bit: 1, ddr: DDRB };
+pub const D9_OUTPUT: Pin = Pin { port: PORTB, bit: 1, ddr: DDRB };
+
+pub const D10_INPUT: Pin = Pin { port: PINB, bit: 2, ddr: DDRB };
+pub const D10_OUTPUT: Pin = Pin { port: PORTB, bit: 2, ddr: DDRB };
+
+pub const D11_INPUT: Pin = Pin { port: PINB, bit: 3, ddr: DDRB };
+pub const D11_OUTPUT: Pin = Pin { port: PORTB, bit: 3, ddr: DDRB };
+
+pub const D12_OUTPUT: Pin = Pin { port: PORTB, bit: 4, ddr: DDRB };
+pub const D12_INPUT: Pin = Pin { port: PINB, bit: 4, ddr: DDRB };
+
+pub const D13_INPUT: Pin = Pin { port: PINB, bit: 5, ddr: DDRB };
+pub const D13_OUTPUT: Pin = Pin { port: PORTB, bit: 5, ddr: DDRB };
+
+
 
 // /* Analog pins */
 // pub const A0: Pin = Pin { port: PORTC, bit: 0, ddr: DDRC };
