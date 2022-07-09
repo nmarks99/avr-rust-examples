@@ -27,17 +27,16 @@ const BUFF_SIZE: usize = 50;
 fn main() -> ! {
     unsafe {
 
-        D2.set_input();
+        usart::init();
+        D12.set_input();
         D3.set_output();
         loop {
-            
-            if D2.read() == true {
-                D3.high();
+            if D12.read() == true {
+                D3.high()
             }
             else {
                 D3.low();
             }
-            // arduino_hal::delay_ms(50);
         }
 
 

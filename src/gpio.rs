@@ -5,7 +5,7 @@ use utils::*;
 pub struct Pin {
     pub port: *mut u8,
     pub bit: u8,
-    pub ddr: *mut u8
+    pub ddr: *mut u8,
 }
 
 impl Pin {
@@ -18,16 +18,16 @@ impl Pin {
         set_bit(self.port,self.bit,false); 
     }
 
-    pub unsafe fn set_output(&self) {
-        set_bit(self.ddr, self.bit, true)
-    }
+    // pub unsafe fn set_output(&self) {
+    //     set_bit(self.ddr, self.bit, true)
+    // }
 
-    pub unsafe fn set_input(&self) {
-        set_bit(self.ddr, self.bit, false)
-    }
+    // pub unsafe fn set_input(&self) {
+    //     set_bit(self.ddr, self.bit, false)
+    // }
 
     pub unsafe fn read(&self) -> bool {
-        if (0x09 & (1 << self.bit)) == (1 << self.bit) {
+        if (*self.port & (1 << self.bit)) == (1 << self.bit) {
             true
         } else {
             false
@@ -47,7 +47,7 @@ pub const D8: Pin = Pin { port: PORTB, bit: 0, ddr: DDRB };
 pub const D9: Pin = Pin { port: PORTB, bit: 1, ddr: DDRB };
 pub const D10: Pin = Pin { port: PORTB, bit: 2, ddr: DDRB };
 pub const D11: Pin = Pin { port: PORTB, bit: 3, ddr: DDRB };
-pub const D12: Pin = Pin { port: PORTB, bit: 4, ddr: DDRB };
+pub const D12: Pin = Pin { port: PINB, bit: 4, ddr: DDRB };
 pub const D13: Pin = Pin { port: PORTB, bit: 5, ddr: DDRB };
 
 // /* Analog pins */
