@@ -6,7 +6,7 @@ for the ATMega328p microcontroller/Arduino Nano board
 - [x] Write digital pins
 - [x] Write USART
 - [x] Read USART
-- [ ] Read digital pins
+- [x] Read digital pins
 - [ ] Read analog pin
 - [ ] Write analog pin
 - [ ] Read I2C device
