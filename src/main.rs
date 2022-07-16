@@ -24,17 +24,24 @@ use gpio::*;
 #[arduino_hal::entry]
 fn main() -> ! {
     unsafe {
+        i2c::init();
 
-        let button = D12_INPUT;
-        let led = D3_OUTPUT;
-        loop {
-            if button.read() == true {
-                led.high();
-            }
-            else {
-                led.low();
-            }
+        loop{
+        
         }
 
+
+         //
+        // let button = D12_INPUT;
+        // let led = D3_OUTPUT;
+        // loop {
+            // if button.read() == true {
+                // led.high();
+            // }
+            // else {
+                // led.low();
+            // }
+        // }
+//
     }
 }

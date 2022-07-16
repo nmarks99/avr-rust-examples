@@ -69,3 +69,42 @@ pub unsafe fn get_status() -> u8 {
     status = read_volatile(TWSR) & 0xF8;
     status
 }
+
+pub unsafe fn set_pin(Wadd: u8, reg: u8, value: u8) {
+    start();
+    write(Wadd);
+    write(reg);
+    write(value);
+    stop();
+}
+
+// pub unsafe fn read_pin(Wadd: u8, reg: u8) -> u8 {
+    // let Radd: u8 = Wadd | 0b01000001;
+    // let mut recv: u8;
+//
+    // start();
+    // send(Wadd);
+    // send(reg);
+//
+//
+//
+// }
+//
+
+
+// void setpin(unsigned char wadd, unsigned char reg, unsigned char value){
+    // i2c_master_start();       // Start bit
+    // i2c_master_send(Wadd); // Send address for write
+    // i2c_master_send(reg);     // Send data - which register?
+    // i2c_master_send(value);     // Send data - what value?
+    // i2c_master_stop();        // Stop bit
+// }
+
+
+
+
+
+
+
+
+
