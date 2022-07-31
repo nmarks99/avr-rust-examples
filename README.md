@@ -8,6 +8,5 @@ for the ATMega328p microcontroller/Arduino Nano board
 - [x] Read USART
 - [x] Read digital pins
 - [ ] Read analog pin
-- [ ] Write analog pin
 - [ ] Read I2C device
 - [ ] Control PWM pin
