@@ -72,16 +72,10 @@ int main(void) {
 
     // char buff[100];
     while (1) {
-        // read_str(buff);
-        // usart_send_str(buff,strlen(buff));
-        // usart_send_byte('\n');
-        // memset(buff,0,sizeof(buff));
-        if ( read_pin_d2() == 1){
-            usart_send_str("High\n",5);
-        }
-        else {
-            usart_send_str("Low\n",5);
-        }
+    
+        myDelay(1.0);
+        usart_send_str("hi\n",3);
+    
     }
 
     return 0;

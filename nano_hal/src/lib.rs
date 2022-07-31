@@ -4,7 +4,7 @@
 #![allow(non_snake_case)]
 
 pub mod atmega328p;
-pub mod utils; 
+pub mod meta; 
 pub mod usart;
 pub mod i2c;
 pub mod gpio;

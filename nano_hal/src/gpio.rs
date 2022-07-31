@@ -1,5 +1,5 @@
 use crate::atmega328p::*;
-use crate::utils::*;
+use crate::meta::*;
 
 /* GPIO pin definitions */
 pub struct Pin {

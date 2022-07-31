@@ -1,6 +1,6 @@
 // https://embedds.com/programming-avr-i2c-interface/
 
-use crate::utils::*;
+use crate::meta::*;
 use crate::atmega328p::*;
 use core::ptr::read_volatile;
 use core::ptr::write_volatile;
