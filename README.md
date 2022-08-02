@@ -1,9 +1,9 @@
 # nano-hal
-A simple hardware abstraction layer written (mostly) from scratch in Rust
+A simple hardware abstraction layer written from scratch in Rust
 for the ATMega328p microcontroller/Arduino Nano board. 
 
 You'll notice I say from scratch, then go right ahead and import the aruino_hal crate...
-This is only because for not I can't figure out how to get it to compile without it.
+This is only because I can't figure out how to get it to compile without it.
 When I try and compile with avr-gcc without the arduino_hal crate, I get a linker error.
 
 # TODO:
