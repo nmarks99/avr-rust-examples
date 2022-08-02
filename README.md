@@ -7,6 +7,7 @@ This is only because I can't figure out how to get it to compile without it.
 When I try and compile with avr-gcc without the arduino_hal crate, I get a linker error.
 
 # TODO:
+- [ ] Figure out a way to write unit tests in embedded no_std environment
 - [x] Write digital pins
 - [x] Write USART
 - [x] Read USART
