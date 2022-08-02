@@ -1,7 +1,7 @@
 #include "timer.h"
 
-// turn on timer 1, set prescaler to 64
 void timer1_init(void) {
+    // turn on timer 1, set prescaler to 64
     TCCR1B = 0b11000000;
 }
 
