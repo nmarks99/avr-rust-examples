@@ -16,25 +16,25 @@ fn panic(_info: &PanicInfo) -> ! {
 
 use nano_hal::gpio::LED_BUILTIN;
 // use nano_hal::gpio::*;
-use nano_halo::timer::*;
+use nano_hal::timer::*;
 
 #[arduino_hal::entry]
 fn main() -> ! {
     unsafe {
         
         timer1_init();
-        let led = LED_BUILTIN;
-        LED_BUILTIN.low();
+        LED_BUILTIN.set_output();
+        LED_BUILTIN.high();
         loop {
-            
-            LED_BUILTIN.low();
-            
-            while timer1_millis() <= 12500 { }
+
+            LED_BUILTIN.high();
+
+            while timer1_millis() <= 3000 { }
             timer1_reset();
-           
-            LED_BUILTIN.high(); 
-          
-            while timer1_millis() <= 12500 { }
+
+            LED_BUILTIN.low();
+
+            while timer1_millis() <= 3000 { }
             timer1_reset();
             
         }
