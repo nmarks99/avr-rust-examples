@@ -8,5 +8,6 @@ pub mod meta;
 pub mod usart;
 pub mod i2c;
 pub mod gpio;
+pub mod timer;
 
 

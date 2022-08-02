@@ -37,6 +37,8 @@ impl Pin {
 
 }
 
+pub const LED_BUILTIN: Pin = Pin { port: PORTB, bit: 5, ddr: DDRB};
+
 /* Digital pins */
 pub const D2_INPUT: Pin = Pin { port: PIND, bit: 2, ddr: DDRD };
 pub const D2_OUTPUT: Pin = Pin { port: PORTD, bit: 2, ddr: DDRD };
