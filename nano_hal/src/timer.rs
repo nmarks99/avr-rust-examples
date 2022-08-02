@@ -10,6 +10,11 @@ pub unsafe fn timer1_millis() -> u16 {
     read_volatile(TCNT1)
 }
 
+pub unsafe fn timer1_reset() {
+    write_volatile(TCNT1,0u8);
+}
+
+
 
 
 // pub struct Timer {
