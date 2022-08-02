@@ -11,7 +11,7 @@ pub unsafe fn timer1_millis() -> u16 {
 }
 
 pub unsafe fn timer1_reset() {
-    write_volatile(TCNT1,0u8);
+    write_volatile(TCNT1,0u16);
 }
 
 
