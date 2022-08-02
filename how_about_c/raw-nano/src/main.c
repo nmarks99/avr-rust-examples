@@ -1,29 +1,23 @@
 #include "usart.h"
-
-
-uint8_t read_pin_d2() {
-    if ( (PINB & (1 << PINB4)) == (1 << PINB4) ) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
+#include "timer.h"
 
 
 int main(void) {   
-    usart_init();
-    // DDRD |= (1 << 2);   
-    DDRB &= ~(1 << PINB4);
-    usart_send_str("Begin\n",6);
+    timer1_init();
+    DDRB |= (1 << DDB5); // set pin B5 as ouptut
 
-    // char buff[100];
+
     while (1) {
-    
-        myDelay(1.0);
-        usart_send_str("hi\n",3);
-    
-    }
+        
 
+        if (get_time() >= 12500) {
+            PORTB ^= (1 << PORTB5);
+            TCNT1 = 0;
+        }
+
+
+
+
+    } 
     return 0;
 }

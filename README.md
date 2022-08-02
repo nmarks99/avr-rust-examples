@@ -16,3 +16,7 @@ When I try and compile with avr-gcc without the arduino_hal crate, I get a linke
 - [ ] Read analog pin
 - [ ] Read I2C device
 - [ ] Control PWM pin
+
+
+
+[https://www.cset.oit.edu/~lynnd/cst120/ho/Lec06%20Slides.pdf](https://www.cset.oit.edu/~lynnd/cst120/ho/Lec06%20Slides.pdf)

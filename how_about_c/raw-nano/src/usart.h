@@ -1,6 +1,5 @@
 #ifndef __USART__H__
 
-#include<avr/io.h>
 #ifndef F_CPU
 #define F_CPU 16000000UL
 #endif
@@ -12,6 +11,7 @@
 #endif
 
 #include <util/setbaud.h>
+#include<avr/io.h>
 
 // functions
 void usart_init(void);
