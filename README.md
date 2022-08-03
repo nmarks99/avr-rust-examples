@@ -12,11 +12,12 @@ When I try and compile with avr-gcc without the arduino_hal crate, I get a linke
 - [x] Write USART
 - [x] Read USART
 - [x] Read digital pins
-- [ ] User timers
+- [x] Use timers
+- [ ] Improve timer code for flexibility
+- [ ] Improve GPIO code for easy of use and performance
 - [ ] Read analog pin
 - [ ] Read I2C device
 - [ ] Control PWM pin
 
 
 
-[https://www.cset.oit.edu/~lynnd/cst120/ho/Lec06%20Slides.pdf](https://www.cset.oit.edu/~lynnd/cst120/ho/Lec06%20Slides.pdf)
