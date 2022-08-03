@@ -3,7 +3,7 @@ use core::ptr::read_volatile;
 use core::ptr::write_volatile;
 
 pub unsafe fn timer1_init() {
-    write_volatile(TCCR1B,0b11000000); // set prescaler to 64 
+    write_volatile(TCCR1B,0b00000011); // set prescaler to 64 
 }
 
 pub unsafe fn timer1_millis() -> u16 {
