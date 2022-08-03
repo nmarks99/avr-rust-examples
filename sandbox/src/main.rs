@@ -23,18 +23,18 @@ fn main() -> ! {
     unsafe {
         
         timer1_init();
-        LED_BUILTIN.set_output();
-        LED_BUILTIN.high();
+        let led = LED_BUILTIN;
+        led.set_output(); 
         loop {
 
-            LED_BUILTIN.high();
+            led.high();
 
-            while timer1_millis() <= 3000 { }
+            while timer1_millis() <= 20000 { }
             timer1_reset();
 
-            LED_BUILTIN.low();
+            led.low();
 
-            while timer1_millis() <= 3000 { }
+            while timer1_millis() <= 20000 { }
             timer1_reset();
             
         }
