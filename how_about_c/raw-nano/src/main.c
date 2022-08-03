@@ -8,7 +8,7 @@ int main(void) {
 
     while (1) {
 
-        if (get_time() >= 12500) {
+        if (get_time1() >= 12500) {
             PORTB ^= (1 << PORTB5);
             TCNT1 = 0; // register 0x84
         }
