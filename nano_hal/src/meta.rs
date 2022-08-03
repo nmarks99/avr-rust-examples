@@ -9,11 +9,20 @@ pub fn _BV(bit: u8) -> u8 {
 
 pub unsafe fn set_bit(addr: *mut u8, bit: u8, state: bool) {
     // sets 'bit' at address 'addr' to 1 ('state' = true) or 0 ('state' = false)
-    let val: u8;
-    match state {
-        true => val = *addr | _BV(bit),
-        false => val = *addr & !_BV(bit)
+    let val: u8 = match state {
+        true => *addr | _BV(bit),
+        false => *addr & !_BV(bit)
     }
     write_volatile(addr,val);
 }
+
+// pub unsafe fn set_bit(addr: *mut u8, bit: u8, state: bool) {
+    // // sets 'bit' at address 'addr' to 1 ('state' = true) or 0 ('state' = false)
+    // let val: u8;
+    // match state {
+        // true => val = *addr | _BV(bit),
+        // false => val = *addr & !_BV(bit)
+    // }
+    // write_volatile(addr,val);
+// }
 
