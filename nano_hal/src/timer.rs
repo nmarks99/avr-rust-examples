@@ -1,32 +1,100 @@
 use crate::atmega328p::*;
-use core::panicking::panic;
 use core::ptr::read_volatile;
 use core::ptr::write_volatile;
+use embedded_hal::blocking::spi::write;
+use libm::floorf;
 
-pub unsafe fn timer1_init() {
-    write_volatile(TCCR1B,0b00000011); // set prescaler to 64 
+
+
+// For now this is just timer1 which is a 16 bit timer
+pub struct Timer {
+    pre: u16
 }
 
-pub unsafe fn timer1_get_count() -> u16 {
-    read_volatile(TCNT1)
+impl Timer {
+   
+    pub unsafe fn init(&self) {
+
+        let pre:u8 = match &self.pre{ 
+            1 => 1u8,
+            8 => 2u8,
+            64 => 3u8,
+            256 => 4u8,
+            1024 => 5u8
+        };
+
+        write_volatile(TCCR1B,pre); // set prescaler to 64 
+    }
+
+    pub unsafe fn get_count(&self) -> u16 {
+        read_volatile(TCNT1)
+    }
+
+    pub unsafe fn reset(&self) {
+        write_volatile(TCNT1,0u16);
+    }
+
+    pub unsafe fn overflow_flag(&self) -> bool {
+        if (read_volatile(TIFR1) & (1 << *TOV1)) == 0 {
+            false    
+        }
+        else {
+            write_volatile(TIFR1, (1 << *TOV1));
+            true 
+        }
+        
+    }
+
 }
 
-pub unsafe fn timer1_reset() {
-    write_volatile(TCNT1,0u16);
+pub const T1: Timer = Timer{pre: 64};
+pub const MAX_TICKS: u32 = 65536;
+pub const TICKS_PER_MS: u8 = 250;
+
+pub unsafe fn delay(ms: f32) {
+    
+    let desired_ticks: u32 = (ms*TICKS_PER_MS as f32) as u32;
+    let desired_overflows: u8 = (floorf((desired_ticks/MAX_TICKS) as f32) ) as u8;
+    let remaining_ticks: u16 =  (desired_ticks % MAX_TICKS) as u16;
+    let mut current_overflow: u8 = 0; 
+
+    T1.init();
+    loop {
+        if T1.overflow_flag() == true {
+            if current_overflow < desired_overflows{
+                current_overflow += 1;
+                T1.reset();
+            }
+            else {
+               if current_ticks >= remaining_ticks {
+                    break
+               }
+            }
+        }
+        current_ticks = T1.get_count() as u32;
+        
+    }
+     
+
 }
 
-// pub const fn get_clock_select(pre:u16) -> [u8;3] {
-   //
-    // let CSB: [u8;3] = match pre {
-        //
-        // 1 => [0,0,1],
-        // 8 => [0,1,0],
-        // 64 => [0,1,1],
-        // 256 => [1,0,0],
-        // 1024 => [1,0,1],
-        // _ => panic!("Invalid prescaler value")
-    // };
-    // CSB
-// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
