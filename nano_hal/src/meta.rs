@@ -12,7 +12,7 @@ pub unsafe fn set_bit(addr: *mut u8, bit: u8, state: bool) {
     let val: u8 = match state {
         true => *addr | _BV(bit),
         false => *addr & !_BV(bit)
-    }
+    };
     write_volatile(addr,val);
 }
 

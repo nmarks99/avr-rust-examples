@@ -13,7 +13,8 @@ panic = "abort"
 [dependencies]
 panic-halt = "0.2.0"
 embedded-hal = "0.2.3"
-libm = "0.2.3"
+# libm = "0.2.3"
+micromath = "2.0.0"
 
 [dependencies.arduino-hal]
 git = "https://github.com/Rahix/avr-hal"

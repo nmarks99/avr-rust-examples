@@ -1,9 +1,7 @@
 use crate::atmega328p::*;
 use core::ptr::read_volatile;
 use core::ptr::write_volatile;
-use embedded_hal::blocking::spi::write;
-use libm::floorf;
-
+use micromath::F32Ext;
 
 
 // For now this is just timer1 which is a 16 bit timer
@@ -20,7 +18,8 @@ impl Timer {
             8 => 2u8,
             64 => 3u8,
             256 => 4u8,
-            1024 => 5u8
+            1024 => 5u8,
+            _ => loop {}
         };
 
         write_volatile(TCCR1B,pre); // set prescaler to 64 
@@ -39,7 +38,7 @@ impl Timer {
             false    
         }
         else {
-            write_volatile(TIFR1, (1 << *TOV1));
+            write_volatile(TIFR1, 1 << *TOV1);
             true 
         }
         
@@ -54,12 +53,16 @@ pub const TICKS_PER_MS: u8 = 250;
 pub unsafe fn delay(ms: f32) {
     
     let desired_ticks: u32 = (ms*TICKS_PER_MS as f32) as u32;
-    let desired_overflows: u8 = (floorf((desired_ticks/MAX_TICKS) as f32) ) as u8;
-    let remaining_ticks: u16 =  (desired_ticks % MAX_TICKS) as u16;
+    let desired_overflows: u8 = (((desired_ticks/MAX_TICKS) as f32).floor() ) as u8;
+    let remaining_ticks: u32 =  desired_ticks % MAX_TICKS;
     let mut current_overflow: u8 = 0; 
-
+    let mut current_ticks: u32;
     T1.init();
+
     loop {
+
+        current_ticks = T1.get_count() as u32;
+
         if T1.overflow_flag() == true {
             if current_overflow < desired_overflows{
                 current_overflow += 1;
@@ -71,30 +74,6 @@ pub unsafe fn delay(ms: f32) {
                }
             }
         }
-        current_ticks = T1.get_count() as u32;
         
     }
-     
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
