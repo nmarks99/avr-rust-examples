@@ -71,6 +71,12 @@ pub unsafe fn println_recieved(buff: &mut [Option<u8>]) {
     send_byte('\n' as u8);
 }
 
+pub unsafe fn send_byte(c: u8) {
+    // Writes a single byte to usart buffer if its ready
+    loop{ if tx_is_ready(){ break } } // do nothing until tx buffer is ready
+    write_volatile(UDR0,c as u8); // when its ready, store character in tx buffer
+}
+
 
 
 unsafe fn tx_is_ready() -> bool {
@@ -90,11 +96,6 @@ unsafe fn rx_is_ready() -> bool {
 }
 
 
-unsafe fn send_byte(c: u8) {
-    // Writes a single byte to usart buffer if its ready
-    loop{ if tx_is_ready(){ break } } // do nothing until tx buffer is ready
-    write_volatile(UDR0,c as u8); // when its ready, store character in tx buffer
-}
 
 
 unsafe fn read_byte() -> u8 {

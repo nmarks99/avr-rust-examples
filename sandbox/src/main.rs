@@ -12,10 +12,8 @@ fn panic(_info: &PanicInfo) -> ! {
 }
 
 
-
-
 use nano_hal::gpio::*;
-use nano_hal::timer::*;
+use nano_hal::delay;
 
 #[arduino_hal::entry]
 fn main() -> ! {
@@ -26,12 +24,10 @@ fn main() -> ! {
         loop {
             
             led.high();
-            delay(500.0);
+            delay!(1000.0);
             led.low();
-            delay(500.0);
+            delay!(1000.0);
             
         }
-
-        
     }
 }
