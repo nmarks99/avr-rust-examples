@@ -27,20 +27,16 @@ int overflow_flag(void) {
 }
 
 
-
 void delay(float ms) {
-    usart_init();
-   
-    float desired_ticks = (uint32_t)(ms*TICKS_PER_MS);
-    uint8_t desired_overflows = (uint8_t)(floor(desired_ticks/MAX_TICKS));
-    uint32_t remaining_ticks = (uint32_t)desired_ticks % MAX_TICKS;
-    uint8_t current_overflow = 0;
-    unsigned short current_ticks;
-    
-    char m[100];
-    sprintf(m,"des_ticks = %lu\ndes_overs = %lu\nremaining_ticks = %lu\n",(uint32_t)desired_ticks,desired_overflows,remaining_ticks);
-    usart_print(m);
+    #warning delay() is both blocking and inefficient
 
+    // this math should not be done on the mcu...
+    const float desired_ticks = (uint32_t)(ms*TICKS_PER_MS);
+    const uint8_t desired_overflows = (uint8_t)(floor(desired_ticks/MAX_TICKS));
+    const uint32_t remaining_ticks = (uint32_t)desired_ticks % MAX_TICKS;
+    uint8_t current_overflow = 0;
+    unsigned short current_ticks; 
+    
     init();
     while(1) {
         current_ticks = get_count();

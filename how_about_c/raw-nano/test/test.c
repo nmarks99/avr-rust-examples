@@ -3,7 +3,12 @@
 #include <stdint.h>
 #include <math.h>
 
-
+#define my_macro(x)
+#if (x > 2)
+    printf("Hi\n");
+#else 
+    printf("bye\n");
+#endif
 
 
 
