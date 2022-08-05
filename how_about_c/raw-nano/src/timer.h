@@ -1,9 +1,19 @@
 #ifndef __TIMER_H__
-#include<avr/io.h>
+#include <math.h>
+#include <avr/io.h>
+#include "usart.h"
+
+#define MAX_TICKS 65536
+#define TICKS_PER_MS 250
 
 
-unsigned short get_time1(void);
-void timer1_init(void);
+
+
+void delay(float ms);
+void init(void);
+unsigned short get_count(void);
+void reset(void);
+int overflow_flag(void);
 
 
 

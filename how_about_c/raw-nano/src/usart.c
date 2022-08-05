@@ -12,13 +12,21 @@ void usart_send_byte(char val) {
     UDR0 = val;
 }
 
-void usart_send_str(char *str, uint16_t len) {
-    
-    int i;
+void usart_print(char *str) {
+    uint16_t i;
+    uint16_t len = strlen(str); 
     for (i = 0; i < len; i++){
         usart_send_byte(str[i]);
     }
+}
 
+void usart_println(char *str) {
+    uint16_t i;
+    uint16_t len = strlen(str); 
+    for (i = 0; i < len; i++){
+        usart_send_byte(str[i]);
+    }
+    usart_send_byte('\n');
 }
 
 

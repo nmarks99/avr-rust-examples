@@ -1,18 +1,16 @@
-#include "usart.h"
 #include "timer.h"
 
 
 int main(void) {   
-    timer1_init();
+    init();
     DDRB |= (1 << DDB5); // set pin B5 as ouptut
 
-    while (1) {
+    while (1) { 
 
-        if (get_time1() >= 12500) {
-            PORTB ^= (1 << PORTB5);
-            TCNT1 = 0; // register 0x84
-        }
-
+        PORTB |= (1 << PORTB5);
+        delay(1000);
+        PORTB &= ~(1 << PORTB5);
+        delay(1000);
     } 
     return 0;
 }
