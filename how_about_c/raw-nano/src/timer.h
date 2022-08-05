@@ -10,10 +10,10 @@
 
 
 void delay(float ms);
-void init(void);
-unsigned short get_count(void);
-void reset(void);
-int overflow_flag(void);
+void timer1_init(void);
+unsigned short timer1_get_count(void);
+void timer1_reset(void);
+int timer1_overflow_flag(void);
 
 
 

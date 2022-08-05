@@ -12,7 +12,7 @@ When I try and compile with avr-gcc without the arduino_hal crate, I get a linke
 - [x] Write USART
 - [x] Read USART
 - [x] Read digital pins
-- [x] Use timers
+- [ ] Use timers
 - [ ] Improve timer code for flexibility
 - [ ] Improve GPIO code for easy of use and performance
 - [ ] Read analog pin

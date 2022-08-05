@@ -2,21 +2,21 @@
 #include<stdio.h>
 
 
-void init(void) {
+void timer1_init(void) {
     // turn on timer 1, set prescaler to 64
     TCCR1B = 3; 
 }
 
-unsigned short get_count(void) {
+unsigned short timer1_get_count(void) {
     unsigned short ticks = TCNT1;
     return ticks;
 }
 
-void reset(void) {
+void timer1_reset(void) {
     TCNT1 = 0;
 }
 
-int overflow_flag(void) {
+int timer1_overflow_flag(void) {
     if ( (TIFR1 & (1 << TOV1)) == 0 ) {
         return 0;
     }
@@ -25,6 +25,8 @@ int overflow_flag(void) {
         return 1;
     }
 }
+
+
 
 
 void delay(float ms) {
@@ -37,15 +39,15 @@ void delay(float ms) {
     uint8_t current_overflow = 0;
     unsigned short current_ticks; 
     
-    init();
+    timer1_init();
     while(1) {
-        current_ticks = get_count();
+        current_ticks = timer1_get_count();
         
         if (desired_overflows > 0) {
-            if (overflow_flag() == 1) {
+            if (timer1_overflow_flag() == 1) {
                 if (current_overflow < desired_overflows) {
                     current_overflow += 1;
-                    reset();
+                    timer1_reset();
                 }
                 else {
                     if (current_ticks >= remaining_ticks) {
