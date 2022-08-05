@@ -36,20 +36,19 @@ int main(void) {
         
     timer1_init();
     usart_init();
-    unsigned long t0 = millis();
+    unsigned long t0;
     unsigned long t_now;
+    unsigned long elap;
+    char m[50];
     while (1) {  
 
+        t0 = millis();
+        _delay_ms(1000);
         t_now = millis();
-        unsigned long elapsed = t_now - t0;
-        if (elapsed >= 1000) {
-            usart_println("hi");
-            overflows = 0;
-            elapsed = 0;
-            t0 = millis();
-        }
-
-        
+        elap = t0 - t_now;
+        sprintf(m,"%lu",elap); 
+        overflows = 0;
+        usart_println(m);
     }
 
     return 0;
