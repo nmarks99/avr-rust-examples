@@ -3,11 +3,6 @@
 
 
 
-ISR(TIMER1_OVF_vect) {
-    timer1_reset();
-    MILLIS++;
-}
-
 void timer1_init(void) {
     // turn on timer 1, set prescaler to 64
     TCCR1B = 3; 

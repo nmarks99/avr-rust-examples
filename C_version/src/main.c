@@ -5,6 +5,12 @@
 // PORTB &= ~(1 << PORTB5); // set low
 // DDRB |= (1 << DDB5); // set pin B5 as ouptut
 
+
+ISR(TIMER1_OVF_vect) {
+    timer1_reset();
+    MILLIS++;
+}
+
 void intialize(void) {
     TIMSK1 |= 0x01;
     sei();
