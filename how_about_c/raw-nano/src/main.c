@@ -1,5 +1,6 @@
 #include "timer.h"
 #include <avr/interrupt.h>
+#include <stdio.h>
 // PORTB |= (1 << PORTB5); // set high
 // PORTB &= ~(1 << PORTB5); // set low
 // DDRB |= (1 << DDB5); // set pin B5 as ouptut

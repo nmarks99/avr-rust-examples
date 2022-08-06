@@ -13,7 +13,7 @@ unsigned short timer1_get_count(void) {
 }
 
 void timer1_reset(void) {
-    TCNT1 = 0;
+    TCNT1 = sizeof(uint16_t) - (F_CPU/PRE);
 }
 
 int timer1_overflow_flag(void) {
@@ -30,7 +30,6 @@ int timer1_overflow_flag(void) {
 
 
 void delay(float ms) {
-    #warning delay() is both blocking and inefficient
 
     // this math should not be done on the mcu...
     const float desired_ticks = (uint32_t)(ms*TICKS_PER_MS);

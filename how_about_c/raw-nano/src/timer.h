@@ -5,7 +5,7 @@
 
 #define MAX_TICKS 65536
 #define TICKS_PER_MS 250
-
+#define PRE 64
 
 
 
