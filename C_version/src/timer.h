@@ -3,13 +3,13 @@
 #include <avr/io.h>
 #include "usart.h"
 
-#define MAX_TICKS 65536
+#define TIMER1_MAX_TICKS 65536
 #define TICKS_PER_MS 250
-#define PRE 64
+#define TIMER1_PRESCALER 64
 
+volatile unsigned long MILLIS;
+#define millis() (MILLIS)
 
-
-void delay(float ms);
 void timer1_init(void);
 unsigned short timer1_get_count(void);
 void timer1_reset(void);
