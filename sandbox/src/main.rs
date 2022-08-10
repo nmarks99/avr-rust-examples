@@ -12,10 +12,8 @@ fn panic(_info: &PanicInfo) -> ! {
 }
 
 
-
-
-
 use nano_hal::gpio::*;
+use nano_hal::timer::*;
 
 #[no_mangle]
 fn main() -> ! {

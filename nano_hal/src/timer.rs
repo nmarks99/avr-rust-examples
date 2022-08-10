@@ -1,10 +1,12 @@
 use crate::atmega328p::*;
 use core::ptr::read_volatile;
 use core::ptr::write_volatile;
+// use crate::meta::sei;
 
 pub const T1: Timer = Timer{pre: 64};
 pub const MAX_TICKS: u32 = 65536;
 pub const TICKS_PER_MS: u8 = 250;
+pub static MILLIS: u32  = 0;
 
 // For now this is just timer1 which is a 16 bit timer
 pub struct Timer {
@@ -44,4 +46,12 @@ impl Timer {
             true 
         }
     }
+    
+    // pub unsafe fn interrupt_initialize() {
+    //     write_volatile(TIMSK1,0b00000001); // check on this, TIMSK1 |= 0x01 would be better
+    //     sei(); 
+    // }
+
+    
+
 }
