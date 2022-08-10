@@ -14,8 +14,7 @@
 
 
 
-# Check if this is a rust project
-# Presumably if there is a Cargo.toml file this is rust...
+# check that its a rust project, build in release mode, flash with avrdude
 if [ -f "./Cargo.toml" ]; then
 
     echo "Building in release mode"

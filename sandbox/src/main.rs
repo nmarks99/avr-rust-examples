@@ -11,18 +11,27 @@ fn panic(_info: &PanicInfo) -> ! {
     loop {}
 }
 
+
+
+
+
 use nano_hal::gpio::*;
 
 #[no_mangle]
 fn main() -> ! {
     unsafe {
         
-        let led = LED_BUILTIN;
-        led.set_output(); 
-        led.high();
+        LED_BUILTIN.set_output(); 
+        LED_BUILTIN.high();
 
         loop {
 
         }
     }
 }
+
+
+
+
+
+
