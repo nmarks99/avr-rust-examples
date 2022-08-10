@@ -11,23 +11,18 @@ fn panic(_info: &PanicInfo) -> ! {
     loop {}
 }
 
-
 use nano_hal::gpio::*;
-use nano_hal::delay;
 
-#[arduino_hal::entry]
+#[no_mangle]
 fn main() -> ! {
     unsafe {
         
-        let led = D3_OUTPUT;
+        let led = LED_BUILTIN;
         led.set_output(); 
+        led.high();
+
         loop {
-            
-            led.high();
-            delay!(1000.0);
-            led.low();
-            delay!(1000.0);
-            
+
         }
     }
 }

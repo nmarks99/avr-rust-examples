@@ -13,12 +13,6 @@ panic = "abort"
 
 [dependencies]
 panic-halt = "0.2.0"
-embedded-hal = "0.2.3"
-
-[dependencies.arduino-hal]
-git = "https://github.com/Rahix/avr-hal"
-rev = "4f8ab2594d4497bdfbd57b641c05c407f3b309f5"
-features = ["arduino-nano"]
 
 [dependencies.nano_hal]
 path = "../nano_hal"
