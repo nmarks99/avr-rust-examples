@@ -1,5 +1,5 @@
 # nano-hal
-A simple hardware abstraction layer written from in Rust
+A simple hardware abstraction layer written in Rust
 for the ATMega328p microcontroller/Arduino Nano board. 
 
 ## What this project tries to be:
