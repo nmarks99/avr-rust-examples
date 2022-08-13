@@ -12,19 +12,18 @@ fn panic(_info: &PanicInfo) -> ! {
 }
 
 
-use nano_hal::gpio::*;
-use nano_hal::timer::*;
+// use nano_hal::gpio::*;
+use avr_device::atmega328p;
 
 #[no_mangle]
 fn main() -> ! {
-    unsafe {
-        
-        LED_BUILTIN.set_output(); 
-        LED_BUILTIN.high();
+    
+    let p = atmega328p::Peripherals::take().unwrap();
+    p.PORTB.ddrb.write(|w| unsafe{w.bits(0xFF)}); // set as output
+    p.PORTB.portb.write(|w| unsafe{w.bits(0x0)}); 
 
-        loop {
+    loop {
 
-        }
     }
 }
 
