@@ -13,103 +13,94 @@ fn panic(_info: &PanicInfo) -> ! {
 }
 
 
-// use nano_hal::gpio::*;
-// use avr_device::atmega328p;
+use nano_hal::gpio::LED_BUILTIN;
 use nano_hal::meta;
-// use nano_hal::timer;
-use nano_hal::gpio;
+use core::ptr::write_volatile;
+
 
 const RESET_VAL:u16 = (65535 - (meta::F_CPU/64)/1000) as u16;
-const TICKS_PER_MS:u8 = 125;
-static mut MILLIS_COUNTER: u32 = 0;
+// const TICKS_PER_MS:u8 = 250;
+static mut MILLIS: u32 = 0;
 
 
-#[avr_device::interrupt(atmega328p)]
-unsafe fn TIMER1_OVF() {
-    avr_device::interrupt::free(|_cs| {
-        gpio::LED_BUILTIN.set_output();
-        gpio::LED_BUILTIN.high();
-        // let p = avr_device::atmega328p::Peripherals::take().unwrap();
-        // p.TC1.tcnt1.write(|w| w.bits(RESET_VAL));
-        MILLIS_COUNTER += 1;
-    })
-}
+// #[avr_device::interrupt(atmega328p)]
+// unsafe fn TIMER1_OVF() {
+//     // timer1_reset();
+//     MILLIS += 1;
+//     led_toggle();
+// }
 
-fn millis_init() {
+pub unsafe fn timer1_init() {
     let p = avr_device::atmega328p::Peripherals::take().unwrap();
-    let tc1 = p.TC1; 
-    tc1.tccr1a.write(|w| unsafe{w.bits(0x0)}); 
-    // tc1.ocr1a.write(|w| unsafe { w.bits(TICKS_PER_MS as u16) });
-    tc1.tccr1b.write(|w| unsafe{w.bits(0b00000011)});
-    tc1.timsk1.write(|w| unsafe{w.bits(0b00000001)});
-    unsafe {MILLIS_COUNTER = 0;}
-
+    p.TC1.tccr1b.write(|w| w.bits(3u8)); // pre = 64
 }
 
-pub unsafe fn millis() -> u32 {
-    // meta::cli(); 
-    MILLIS_COUNTER*TICKS_PER_MS as u32
+pub unsafe fn timer1_reset() {
+    let p = avr_device::atmega328p::Peripherals::take().unwrap();
+    p.TC1.tcnt1.write(|w| w.bits(RESET_VAL)); 
 }
 
+pub unsafe fn interrupt_init(){
+    let p = avr_device::atmega328p::Peripherals::take().unwrap();
+    let current_bits = p.TC1.timsk1.read().bits() as u8;
+    let new_bits: u8 = current_bits | 0x01;
+    p.TC1.timsk1.write(|w| w.bits(new_bits)); 
+    avr_device::interrupt::enable();
+}
+
+pub unsafe fn led_toggle() { 
+    let p = avr_device::atmega328p::Peripherals::take().unwrap();
+    let current_bits = p.PORTB.portb.read().bits();
+    let new_bits = current_bits ^ (1 << 5);
+    p.PORTB.portb.write(|w| w.bits(new_bits));
+}
+
+pub unsafe fn led_set_high() {
+    let p = avr_device::atmega328p::Peripherals::take().unwrap();
+    let current_bits = p.PORTB.portb.read().bits();
+    let new_bits = current_bits | (1 << 5);
+    p.PORTB.portb.write(|w| w.bits(new_bits));
+}
+
+pub unsafe fn let_set_low() {
+    let p = avr_device::atmega328p::Peripherals::take().unwrap();
+    // let current_bits = p.PORTB.portb.read().bits();
+    // let new_bits = current_bits & !(1 << 5);
+    p.PORTB.portb.write(|w| w.bits(0x00));
+}
+
+pub unsafe fn led_set_output() {
+    
+
+}
 
 
 #[no_mangle]
 fn main() -> ! {
-    unsafe{ gpio::LED_BUILTIN.set_output(); }
-    let p = avr_device::atmega328p::Peripherals::take().unwrap();
-    
-    // let t1 = timer::Timer { pre: 64};
-    // unsafe{ t1.init(); } // initialize timer1
-    // p.TC1.tccr1b.write(|w| unsafe{w.bits(3)});
-
-    
-    // enable timer overflow interrupt 
-    // p.TC1.timsk1.write(|w| unsafe{w.bits(0b00000001)}); 
-    unsafe{ avr_device::interrupt::enable(); }
-    millis_init();
-
-
-    // let p = atmega328p::Peripherals::take().unwrap();
-    // p.PORTB.ddrb.write(|w| unsafe{w.bits(0xFF)}); // set as output
-    // p.PORTB.portb.write(|w| unsafe{w.bits(0x0)}); 
-    loop {
+    unsafe {
+        led_set_output();
+        // interrupt_init();
+        // timer1_init();
+        led_set_high();
+        // let mut c:u32 = 0; 
         loop{
-
-            if p.TC1.tifr1.read().tov1().bit_is_set() {
-                unsafe{gpio::LED_BUILTIN.low();}
-            }
-            else {
-                unsafe{gpio::LED_BUILTIN.high();}
-                break;
-            }
+            // let t0: u32 = MILLIS;
+            
+            // loop {
+            //     let tf:u32 = MILLIS;
+            //     if (tf - t0) >= 2000 {
+            //         break;
+            //     }
+            // }
+            // if c % 2 == 0 {
+            //     LED_BUILTIN.high();
+            // }
+            // else {
+            //     LED_BUILTIN.low();
+            // }
+            // c += 1;
         }
-
-    }
-
-    // unsafe {
-    //     let mut count = 0;
-    //     loop {
-    //         count += 1;                
-    //         let t0 = millis();
-    //         loop {
-
-    //             let tf = millis();
-    //             if tf - t0 >= 2000 {
-    //                 if count % 2 == 0{
-    //                     led.low()
-    //                 }
-    //                 else {
-    //                     led.high()
-    //                 }
-    //                 break;
-    //             }
-
-                
-    //         }
-
-
-    //     }
-    // }
+    } 
 }
 
 
