@@ -4,7 +4,7 @@
 #include "usart.h"
 
 #define TIMER1_MAX_TICKS 65536
-#define TICKS_PER_MS 250
+#define TICKS_PER_MS 150
 #define TIMER1_PRESCALER 64
 
 volatile unsigned long MILLIS;

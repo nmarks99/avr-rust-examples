@@ -10,7 +10,7 @@ pub static MILLIS: u32  = 0;
 
 // For now this is just timer1 which is a 16 bit timer
 pub struct Timer {
-    pre: u16
+    pub pre: u16
 }
 
 impl Timer {
