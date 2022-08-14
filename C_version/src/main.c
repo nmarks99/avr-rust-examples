@@ -18,8 +18,9 @@ void led_toggle(void) {
 
 
 ISR(TIMER1_OVF_vect) {
-    timer1_reset();
+    /* timer1_reset(); */
     MILLIS++;
+    led_toggle();
 }
 
 void intialize(void) {
@@ -34,20 +35,20 @@ int main(void) {
     intialize();
     timer1_init();
 
-    unsigned long delay_time_ms = 500;
+    /* unsigned long delay_time_ms = 500; */
     while (1) {
 
-        unsigned long t0 = millis();
-
-        while (1) {
-            unsigned long tf = millis();
-            unsigned long elap = tf - t0;
-
-            if (elap >= delay_time_ms) {
-                break;
-            }
-        }
-        PORTB ^= (1 << PORTB5);
+        /* unsigned long t0 = millis(); */
+/*  */
+        /* while (1) { */
+            /* unsigned long tf = millis(); */
+            /* unsigned long elap = tf - t0; */
+/*  */
+            /* if (elap >= delay_time_ms) { */
+                /* break; */
+            /* } */
+        /* } */
+        /* PORTB ^= (1 << PORTB5); */
     }
 
     return 0;

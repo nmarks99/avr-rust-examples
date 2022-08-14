@@ -14,7 +14,6 @@ fn panic(_info: &PanicInfo) -> ! {
 
 
 use nano_hal::timer::T1;
-// use nano_hal::timer::millis;
 use nano_hal::gpio::LED_BUILTIN;
 
 static mut MILLIS: u32 = 0;
@@ -27,7 +26,6 @@ unsafe fn TIMER1_OVF() {
 }
 
 
-
 #[no_mangle]
 fn main() -> ! {
     unsafe {
@@ -36,7 +34,9 @@ fn main() -> ! {
         T1.init(); 
         T1.overflow_interrupt_enable();
 
+        
         loop {
+        
         }
     } 
 }
