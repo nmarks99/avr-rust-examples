@@ -14,6 +14,8 @@ unsigned short timer1_get_count(void) {
 }
 
 void timer1_reset(void) {
+    // Resets the timer at an offset so that it will overflow
+    // every millisecond
     TCNT1 = sizeof(uint16_t) - (F_CPU/TIMER1_PRESCALER)/1000;
 }
 

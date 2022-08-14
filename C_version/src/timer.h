@@ -4,8 +4,8 @@
 #include "usart.h"
 
 #define TIMER1_MAX_TICKS 65536
-#define TICKS_PER_MS 150
 #define TIMER1_PRESCALER 64
+#define TICKS_PER_MS (F_CPU/TIMER1_PRESCALER)/1000
 
 volatile unsigned long MILLIS;
 #define millis() (MILLIS)
