@@ -1,7 +1,7 @@
 use crate::atmega328p::*;
 use core::ptr::read_volatile;
 use core::ptr::write_volatile;
-use crate::meta::F_CPU;
+// use crate::meta::F_CPU;
 
 pub const T1: Timer = Timer {pre: 64};
 pub const MAX_TICKS: u32 = 65536;
@@ -41,7 +41,8 @@ impl Timer {
     }
 
     pub unsafe fn reset(&self) {
-        let RESET_VAL: u16 = ( MAX_TICKS - (F_CPU/self.pre as u32)/1000 ) as u16;
+        // let RESET_VAL: u16 = ( MAX_TICKS - (F_CPU/self.pre as u32)/1000 ) as u16;
+        let RESET_VAL = 65535 - 250;
         write_volatile(TCNT1,RESET_VAL);
     }
 
@@ -61,12 +62,4 @@ impl Timer {
             true 
         }
     }
-    
-    // pub unsafe fn interrupt_initialize() {
-    //     write_volatile(TIMSK1,0b00000001); // check on this, TIMSK1 |= 0x01 would be better
-    //     sei(); 
-    // }
-
-    
-
 }

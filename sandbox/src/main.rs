@@ -14,15 +14,16 @@ fn panic(_info: &PanicInfo) -> ! {
 
 
 use nano_hal::timer::T1;
-use nano_hal::timer::millis;
+// use nano_hal::timer::millis;
 use nano_hal::gpio::LED_BUILTIN;
 
 static mut MILLIS: u32 = 0;
 
 #[avr_device::interrupt(atmega328p)]
 unsafe fn TIMER1_OVF() {
-    T1.reset();    
+    // T1.reset();    
     MILLIS += 1;
+    LED_BUILTIN.toggle()
 }
 
 
@@ -31,24 +32,11 @@ unsafe fn TIMER1_OVF() {
 fn main() -> ! {
     unsafe {
         LED_BUILTIN.set_output();
+        LED_BUILTIN.low();
         T1.init(); 
         T1.overflow_interrupt_enable();
 
         loop {
-
-            let t0 = millis();
-            loop {
-                if (millis() - t0) >= 2000 {
-                    break
-                }
-            }
-            LED_BUILTIN.toggle();
-
-
-
-
-
-
         }
     } 
 }
