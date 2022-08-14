@@ -38,7 +38,7 @@ impl Timer {
         write_volatile(TCNT1,RESET_VAL);
     }
 
-    pub unsafe fn overflow_interrupt_enable() {
+    pub unsafe fn overflow_interrupt_enable(&self) {
         let current_bits = read_volatile(TIMSK1);
         let new_bits = current_bits | 0x01;
         write_volatile(TIMSK1, new_bits);

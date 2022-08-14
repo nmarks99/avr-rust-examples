@@ -34,7 +34,7 @@ fn main() -> ! {
     unsafe {
         LED_BUILTIN.set_output();
         T1.init(); 
-        T1.overflow_iterrupt_enable();
+        T1.overflow_interrupt_enable();
         let mut c:u32 = 0; 
         loop{
             let t0: u32 = MILLIS;
