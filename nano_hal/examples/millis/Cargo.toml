@@ -15,7 +15,7 @@ panic = "abort"
 panic-halt = "0.2.0"
 
 [dependencies.nano_hal]
-path = "../../nano_hal"
+path = "../../../nano_hal"
 
 [dependencies.avr-device]
 version = "0.3.4"
