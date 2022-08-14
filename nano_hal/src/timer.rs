@@ -5,10 +5,7 @@ use crate::meta::F_CPU;
 use avr_device::interrupt::Mutex;
 use core::cell::Cell;
 
-pub const T1: Timer = Timer {pre: 64};
 pub const MAX_TICKS: u32 = 65535;
-
-
 
 #[avr_device::interrupt(atmega328p)]
 unsafe fn TIMER1_OVF() {
@@ -76,3 +73,6 @@ impl Timer {
         }
     }
 }
+
+
+pub const T1: Timer = Timer {pre: 64};
