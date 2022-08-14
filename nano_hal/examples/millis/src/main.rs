@@ -34,46 +34,35 @@ unsafe fn TIMER1_OVF() {
 }
 
 
-unsafe fn millis() -> u32{
+fn millis() -> u32{
     avr_device::interrupt::free(|cs| MILLIS_COUNT.borrow(cs).get())
 }
 
 
-unsafe fn delay_ms(ms: f32) {
-    loop {
-        if millis() >= ms as u32 {
-            break
-        }
-    }
-}
-
-
-
-
 #[no_mangle]
 fn main() -> ! {
+    
     unsafe {
-        LED_BUILTIN.set_output();
-        LED_BUILTIN.low();
-        T1.init(); 
-        T1.overflow_interrupt_enable();
+    LED_BUILTIN.set_output();
+    LED_BUILTIN.low();
+    T1.init(); 
+    T1.overflow_interrupt_enable();
+    }
 
-
+    loop {
+        let t0: u32 = millis();
+        let mut tf: u32;
+        let mut elap: u32;
         loop {
-            let t0: u32 = millis();
-            let mut tf: u32;
-            let mut elap: u32;
-            loop {
-                tf = millis();
-                elap = tf - t0;
-                if elap >= 2000 {
-                    break
-                }
+            tf = millis();
+            elap = tf - t0;
+            if elap >= 1000 {
+                break
             }
-            LED_BUILTIN.toggle();
-        
         }
-    } 
+        unsafe { LED_BUILTIN.toggle(); }
+    
+    }
 }
 
 
