@@ -1,5 +1,6 @@
 use crate::atmega328p::*;
 use crate::meta::*;
+use core::ptr::{read_volatile, write_volatile};
 
 /* GPIO pin definitions */
 pub struct Pin {
@@ -25,6 +26,12 @@ impl Pin {
 
     pub unsafe fn set_input(&self) {
         set_bit(self.ddr, self.bit, false)
+    }
+
+    pub unsafe fn toggle(&self) {
+        let current_bits = read_volatile(self.port);
+        let new_bits = current_bits ^ _BV(self.bit);
+        write_volatile(self.port, new_bits);
     }
 
     pub unsafe fn read(&self) -> bool {

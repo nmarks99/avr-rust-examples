@@ -8,6 +8,13 @@ pub const MAX_TICKS: u32 = 65536;
 pub const TICKS_PER_MS: u8 = 250;
 pub static MILLIS: u32  = 0;
 
+
+pub unsafe fn millis() -> u32 {
+    MILLIS
+}
+
+
+
 // For now this is just timer1 which is a 16 bit timer
 pub struct Timer {
     pub pre: u16
