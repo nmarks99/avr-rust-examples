@@ -39,6 +39,17 @@ unsafe fn millis() -> u32{
 }
 
 
+unsafe fn delay_ms(ms: f32) {
+    loop {
+        if millis() >= ms as u32 {
+            break
+        }
+    }
+}
+
+
+
+
 #[no_mangle]
 fn main() -> ! {
     unsafe {
