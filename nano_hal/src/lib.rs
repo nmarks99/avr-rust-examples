@@ -1,3 +1,4 @@
+#![feature(abi_avr_interrupt)]
 #![no_std]
 #![feature(llvm_asm)]
 #![feature(core_intrinsics)]

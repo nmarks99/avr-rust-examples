@@ -1,18 +1,30 @@
 use crate::atmega328p::*;
 use core::ptr::read_volatile;
 use core::ptr::write_volatile;
-// use crate::meta::F_CPU;
+use crate::meta::F_CPU;
+use avr_device::interrupt::Mutex;
+use core::cell::Cell;
 
 pub const T1: Timer = Timer {pre: 64};
-pub const MAX_TICKS: u32 = 65536;
-pub const TICKS_PER_MS: u8 = 250;
-pub static MILLIS: u32  = 0;
+pub const MAX_TICKS: u32 = 65535;
 
 
-pub unsafe fn millis() -> u32 {
-    MILLIS
+
+#[avr_device::interrupt(atmega328p)]
+unsafe fn TIMER1_OVF() {
+    T1.reset(); // ensures we overflow every millisecond
+    
+    avr_device::interrupt::free(|cs| {
+        let counter_cell = MILLIS_COUNT.borrow(cs);
+        let counter = counter_cell.get();
+        counter_cell.set(counter + 1);
+    })
 }
 
+pub static MILLIS_COUNT: Mutex<Cell<u32>> = Mutex::new(Cell::new(0));
+pub fn millis() -> u32{
+    avr_device::interrupt::free(|cs| MILLIS_COUNT.borrow(cs).get())
+}
 
 
 // For now this is just timer1 which is a 16 bit timer
@@ -24,7 +36,7 @@ impl Timer {
    
     pub unsafe fn init(&self) {
 
-        let pre:u8 = match &self.pre{ 
+        let pre_out:u8 = match &self.pre{ 
             1 => 1u8,
             8 => 2u8,
             64 => 3u8,
@@ -33,7 +45,7 @@ impl Timer {
             _ => loop {}
         };
 
-        write_volatile(TCCR1B,pre); // set prescaler to 64 
+        write_volatile(TCCR1B,pre_out); // set prescaler
     }
 
     pub unsafe fn get_count(&self) -> u16 {
@@ -41,8 +53,9 @@ impl Timer {
     }
 
     pub unsafe fn reset(&self) {
-        // let RESET_VAL: u16 = ( MAX_TICKS - (F_CPU/self.pre as u32)/1000 ) as u16;
-        let RESET_VAL = 65535 - 250;
+        // not sure why putting self.pre in the computation messes it up
+        const PRESCALER: u32 = 64;
+        let RESET_VAL: u16 = ( MAX_TICKS - (F_CPU/PRESCALER)/1000 ) as u16;
         write_volatile(TCNT1,RESET_VAL);
     }
 

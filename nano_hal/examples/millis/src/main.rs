@@ -13,30 +13,8 @@ fn panic(_info: &PanicInfo) -> ! {
 }
 
 
-use nano_hal::timer::T1;
+use nano_hal::timer::{T1, millis};
 use nano_hal::gpio::LED_BUILTIN;
-use core::cell::Cell;
-use avr_device::interrupt::Mutex;
-
-// static mut MILLIS: u32 = 0;
-static MILLIS_COUNT: Mutex<Cell<u32>> = Mutex::new(Cell::new(0));
-
-
-#[avr_device::interrupt(atmega328p)]
-unsafe fn TIMER1_OVF() {
-    T1.reset(); // ensures we overflow every millisecond
-    
-    avr_device::interrupt::free(|cs| {
-        let counter_cell = MILLIS_COUNT.borrow(cs);
-        let counter = counter_cell.get();
-        counter_cell.set(counter + 1);
-    })
-}
-
-
-fn millis() -> u32{
-    avr_device::interrupt::free(|cs| MILLIS_COUNT.borrow(cs).get())
-}
 
 
 #[no_mangle]
@@ -48,7 +26,7 @@ fn main() -> ! {
     T1.init(); 
     T1.overflow_interrupt_enable();
     }
-
+    const DELAY_TIME: u32 = 150;
     loop {
         let t0: u32 = millis();
         let mut tf: u32;
@@ -56,7 +34,7 @@ fn main() -> ! {
         loop {
             tf = millis();
             elap = tf - t0;
-            if elap >= 1000 {
+            if elap >= DELAY_TIME {
                 break
             }
         }
