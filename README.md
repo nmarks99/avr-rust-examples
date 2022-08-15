@@ -43,9 +43,9 @@ I may just abondon this whole thing very quickly and use avr_hal...or go back to
 
 # TODO:
 - [x] Write digital pins
+- [x] Read digital pins
 - [x] Write USART
 - [x] Read USART
-- [x] Read digital pins
 - [x] Implement millis() function
 - [ ] Read analog pin with ADC
 - [ ] Refactor timer code to incorporate timers 0 and 2
