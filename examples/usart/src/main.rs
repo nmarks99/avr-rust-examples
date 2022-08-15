@@ -15,6 +15,7 @@ fn panic(_info: &PanicInfo) -> ! {
 
 
 use nano_hal::usart;
+use itoa;
 use heapless::String;
 use core::fmt::Write;
 
@@ -22,12 +23,16 @@ use core::fmt::Write;
 fn main() -> ! {
     unsafe {
         usart::init();
-        let mut m: String<50> = String::from("");
-        let x: u8 = 2;
-        write!(&mut m, "howdy {}",x).unwrap();
-        usart::println("hi");
-        let mm: &str = m.as_str();
-        usart::println(mm); 
+        usart::println("asdf");
+        
+        let mut b = itoa::Buffer::new();
+        let x: u32 = 163832;
+        let num_buff = b.format(x);
+
+        
+        let mut s: String<50> = String::from("b");
+        write!(&mut s, "Hey this is a string {}", num_buff).unwrap();
+        usart::println(&s[..]); 
 
         loop {
 
