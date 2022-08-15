@@ -35,7 +35,8 @@ come up so I'm not terribly worried about it.
 Crates like avr_hal look cool, however there is barely any documentation 
 and the code, although safe, is very very cryptic to me. It takes lots of
 digging to find where registers are being read and written to. I also hate to have
-lines of code that are calling functions and methods that are so heavily nested it 
+lines of code in your typical source files (not just in the depths of the library) 
+that are calling functions and methods that are so heavily nested it 
 looks like `Thing::some_thing_else::some_struct().some_method().take().unwrap()`. Like cmon,
 that's terribly ugly. I'm going to try and do better with this library but no promises,
 I may just abondon this whole thing very quickly and use avr_hal...or go back to C.
