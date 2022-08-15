@@ -21,17 +21,17 @@ unsafe fn TIMER1_OVF() {
 }
 
 
-// Initialize millis stuff the first time the function is called:
 pub static MILLIS_COUNT: Mutex<Cell<u32>> = Mutex::new(Cell::new(0));
 pub fn millis() -> u32{
-    let millis_count_now = avr_device::interrupt::free(|cs| MILLIS_COUNT.borrow(cs).get());
-    if millis_count_now == 0 {
+    // Initialize millis stuff the first time the function is called:
+    let millis_count = avr_device::interrupt::free(|cs| MILLIS_COUNT.borrow(cs).get());
+    if millis_count == 0 {
         unsafe { 
             T1.init();
             T1.overflow_interrupt_enable();
         }
     }
-    millis_count_now
+    millis_count
 }
 
 
