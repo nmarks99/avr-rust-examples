@@ -16,9 +16,9 @@ embedded-hal = "0.2.3"
 
 [dependencies.avr-device]
 version = "0.3.4"
-features = ["atmega32u4"]
+features = ["atmega328p"]
 
-# [dependencies.arduino-hal]
-# git = "https://github.com/Rahix/avr-hal"
-# rev = "4f8ab2594d4497bdfbd57b641c05c407f3b309f5"
-# features = ["arduino-nano"]
+[dependencies.arduino-hal]
+git = "https://github.com/Rahix/avr-hal"
+rev = "4f8ab2594d4497bdfbd57b641c05c407f3b309f5"
+features = ["arduino-nano"]

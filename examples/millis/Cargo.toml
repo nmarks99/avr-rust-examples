@@ -1,5 +1,5 @@
 [package]
-name = "sandbox"
+name = "firmware"
 version = "0.1.0"
 authors = ["Nick <nmarks99@gmail.com>"]
 edition = "2018"
