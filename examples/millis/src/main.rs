@@ -20,13 +20,14 @@ use nano_hal::gpio::LED_BUILTIN;
 #[no_mangle]
 fn main() -> ! {
     
+    const DELAY_TIME: u32 = 1000;
+     
     unsafe {
     LED_BUILTIN.set_output();
     LED_BUILTIN.low();
     T1.init(); 
     T1.overflow_interrupt_enable();
     }
-    const DELAY_TIME: u32 = 150;
     loop {
         let t0: u32 = millis();
         let mut tf: u32;
