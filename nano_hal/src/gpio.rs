@@ -13,28 +13,39 @@ impl Pin {
 
 
     pub unsafe fn high(&self) {
-       set_bit(self.port,self.bit,true); 
+        // Sets PORTxn high
+        set_bit(self.port,self.bit,true); 
     }
 
     pub unsafe fn low(&self) {
+        // Sets PORTxn low
         set_bit(self.port,self.bit,false); 
     }
 
     pub unsafe fn set_output(&self) {
-        set_bit(self.ddr, self.bit, true)
+        // Sets DDRxn register high
+        set_bit(self.ddr, self.bit, true);
     }
 
     pub unsafe fn set_input(&self) {
-        set_bit(self.ddr, self.bit, false)
+        // Sets DDRxn register low
+        set_bit(self.ddr, self.bit, false);
+        set_bit(self.port,self.bit,true); // enable pullup resistor
     }
 
     pub unsafe fn toggle(&self) {
+        // Flips the value of PORTxn
         let current_bits = read_volatile(self.port);
         let new_bits = current_bits ^ _BV(self.bit);
         write_volatile(self.port, new_bits);
     }
 
+    pub unsafe fn toggle_pin_reg(&self) {
+        write_volatile(PINB,1u8);
+    }
+
     pub unsafe fn read(&self) -> bool {
+        // Reads PORTxn and returns its value, true (logic 1) or false (logic 0)
         if (*self.port & (1 << self.bit)) == (1 << self.bit) {
             true
         } else {
@@ -43,6 +54,8 @@ impl Pin {
     }
 
 }
+
+pub const D2: Pin = Pin { port: PORTD, bit: 2, ddr: DDRD };
 
 pub const LED_BUILTIN: Pin = Pin { port: PORTB, bit: 5, ddr: DDRB};
 
