@@ -7,6 +7,8 @@ use core::cell::Cell;
 
 pub const MAX_TICKS: u32 = 65535;
 
+pub const T1: Timer = Timer {pre: 64};
+
 #[avr_device::interrupt(atmega328p)]
 unsafe fn TIMER1_OVF() {
     T1.reset(); // ensures we overflow every millisecond
@@ -18,9 +20,18 @@ unsafe fn TIMER1_OVF() {
     })
 }
 
+
+// Initialize millis stuff the first time the function is called:
 pub static MILLIS_COUNT: Mutex<Cell<u32>> = Mutex::new(Cell::new(0));
 pub fn millis() -> u32{
-    avr_device::interrupt::free(|cs| MILLIS_COUNT.borrow(cs).get())
+    let millis_count_now = avr_device::interrupt::free(|cs| MILLIS_COUNT.borrow(cs).get());
+    if millis_count_now == 0 {
+        unsafe { 
+            T1.init();
+            T1.overflow_interrupt_enable();
+        }
+    }
+    millis_count_now
 }
 
 
@@ -75,4 +86,13 @@ impl Timer {
 }
 
 
-pub const T1: Timer = Timer {pre: 64};
+
+
+
+
+
+
+
+
+
+
