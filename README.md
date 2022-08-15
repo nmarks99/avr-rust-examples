@@ -16,7 +16,8 @@ clear what they are doing under the hood.
 sacrificed for readability, simplicity, compiled binary size
 and likeness to embedded C code.
 - Very memory safe. Using Rust will make for safer code than a 
-typical embedded C library however don't be suprised at all the
+typical embedded C library, and safe Rust code will be used whenever 
+possible, however don't be suprised at all the
 unsafe blocks. Safety is readily sacrificed for readability and simplicity 
 in many instances.
 
