@@ -13,6 +13,7 @@ void i2c_master_start(void) {
     // Send start bit, enable interrupt, enable TWI  
     TWCR = (1<<TWINT)|(1<<TWSTA)|(1<<TWEN); 
     while ((TWCR & (1 << TWSTA)) == 0); // Wait until start bit sent
+    if (i2c_master_get_status() != START_SUCCESS) { panic_msg("Paniced at start!"); }
 }
 
 void i2c_master_stop(void) {
@@ -24,6 +25,7 @@ void i2c_master_send(uint8_t data_byte) {
     TWDR = data_byte; // Store data in data register
     TWCR = (1 << TWINT) | (1 << TWEN);
     while ((TWCR & (1<<TWINT)) == 0); // Wait for transmission
+    if (i2c_master_get_status() != SLA_ACK_SUCCESS) { panic_msg("Paniced at send!"); }
 }
 
 uint8_t i2c_master_read_ack(void) {
@@ -77,9 +79,9 @@ uint8_t read_pin(uint8_t Wadd, uint8_t Radd, uint8_t reg){
     i2c_master_start();         // Restart
     // if ((i2c_master_get_status()) != RESTART_SUCCESS) { panic(); }
  
-    i2c_master_send(Radd);      // Send read address
-    recv = i2c_master_read_ack();    // Get received value, send ack
-    i2c_master_stop();          // Stop bit
+    i2c_master_send(Radd);          // Send read address
+    recv = i2c_master_read_ack();   // Get received value, send ack
+    i2c_master_stop();              // Stop bit
     
     return recv;
 }

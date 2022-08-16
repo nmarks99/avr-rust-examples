@@ -6,11 +6,9 @@ void imu_setup(void) {
     // Check that communcation with IMU is correct
     who = read_pin(IMU_WADD,IMU_RADD,IMU_WHOAMI);
     if (who != 0b1101001) { 
-        usart_println("PANIC!");
         char buff[10];
         sprintf(buff,"who = %x",who);
-        usart_println(buff);
-        panic(); 
+        panic_msg(buff); 
     }
 
     // Initialize the acceleration sensor
