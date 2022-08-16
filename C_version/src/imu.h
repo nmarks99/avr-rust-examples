@@ -6,6 +6,7 @@
 #include "meta.h"
 
 #define IMU_WHOAMI 0x0F     // Address for WHOAMI register
+#define IMU_STATUS_REG 0x20 // Status register address
 #define IMU_WADD 0b11010100 // Write address
 #define IMU_RADD 0b11010101 // Read address
 #define IMU_CTRL1_XL 0x10   // Acceleration control register
@@ -14,6 +15,7 @@
 #define IMU_OUT_TEMP_L 0x20 // Temperature
 
 void imu_setup(void);
-void imu_read(uint8_t reg, int16_t *data,int len);
+void imu_read(uint8_t reg, int16_t *data, int len);
+uint8_t imu_get_status(void);
 
 #endif

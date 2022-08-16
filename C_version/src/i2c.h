@@ -17,7 +17,7 @@ void i2c_master_send(uint8_t byte); // send a byte
 uint8_t i2c_master_read_ack(void); // Read data, send ack
 uint8_t i2c_master_read_nack(void); // Read data, don't send ack
 void i2c_master_stop(void); // send a stop
-void set_pin(uint8_t Wadd, uint8_t reg, uint8_t value);
-uint8_t read_pin(uint8_t Wadd, uint8_t Radd, uint8_t reg);
+void write_byte(uint8_t Wadd, uint8_t reg, uint8_t value);
+uint8_t read_byte(uint8_t Wadd, uint8_t Radd, uint8_t reg);
 void i2c_read_multiple(uint8_t Wadd, uint8_t Radd, uint8_t reg, uint8_t *raw, int len);
 #endif

@@ -4,21 +4,26 @@
 void imu_setup(void) {
     unsigned char who;
     // Check that communcation with IMU is correct
-    who = read_pin(IMU_WADD,IMU_RADD,IMU_WHOAMI);
-    if (who != 0b1101001) { 
-        char buff[10];
-        sprintf(buff,"who = %x",who);
-        panic_msg(buff); 
+    
+    // who = read_byte(IMU_WADD,IMU_RADD,IMU_WHOAMI);
+    // if (who != 0b1101001) { 
+    //     char buff[10];
+    //     sprintf(buff,"who = %x",who);
+    //     panic_msg(buff); 
+    // }
+
+    if (imu_get_status() != 1) {
+        panic_msg("Paniced at IMU status check");
     }
 
     // Initialize the acceleration sensor
-    set_pin(IMU_WADD,IMU_CTRL1_XL,0b10000010); // Sample rate 1.66 kHz, 2g sensitivity, 100 Hz filter
+    write_byte(IMU_WADD,IMU_CTRL1_XL,0b10000010); // Sample rate 1.66 kHz, 2g sensitivity, 100 Hz filter
 
     // Initialize gyroscope
-    set_pin(IMU_WADD,IMU_CTRL2_G,0b10001000);  // Sample rate 1.66 kHz, 1000 dps sensitivity
+    write_byte(IMU_WADD,IMU_CTRL2_G,0b10001000);  // Sample rate 1.66 kHz, 1000 dps sensitivity
 
     // Control register
-    set_pin(IMU_WADD,IMU_CTRL3_C,0b00000100);  //  IF_INC = 1 
+    write_byte(IMU_WADD,IMU_CTRL3_C,0b00000100);  //  IF_INC = 1 
 
 }
 
@@ -31,4 +36,11 @@ void imu_read(uint8_t reg, int16_t *data, int len) {
     for (i = 0; i < 7; i++) {
         data[i] = (raw[(i*2)+1] << 8) | raw[i*2];
     }
+}
+
+uint8_t imu_get_status(void) {
+    uint8_t mask = 0b00000001;
+    uint8_t status = read_byte(IMU_WADD,IMU_RADD,IMU_STATUS_REG);
+    status = status & mask;
+    return status;
 }
