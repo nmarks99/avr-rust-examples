@@ -2,6 +2,7 @@
 #define I2C_H__
 
 #include <avr/io.h>
+#include "meta.h"
 
 #define START_SUCCESS 0x08
 #define RESTART_SUCCESS 0x10

@@ -1,11 +1,17 @@
-
 #include "imu.h"
+#include "usart.h"
 
 void imu_setup(void) {
-    uint8_t who;
+    unsigned char who;
     // Check that communcation with IMU is correct
     who = read_pin(IMU_WADD,IMU_RADD,IMU_WHOAMI);
-    if (who != 0b1101001); panic();
+    if (who != 0b1101001) { 
+        usart_println("PANIC!");
+        char buff[10];
+        sprintf(buff,"who = %x",who);
+        usart_println(buff);
+        panic(); 
+    }
 
     // Initialize the acceleration sensor
     set_pin(IMU_WADD,IMU_CTRL1_XL,0b10000010); // Sample rate 1.66 kHz, 2g sensitivity, 100 Hz filter

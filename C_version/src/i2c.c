@@ -1,5 +1,5 @@
 #include "i2c.h"
-#include "meta.h"
+#include "usart.h"
 
 void i2c_master_setup(void) {
     // SCL_FREQ F_CPU/(16 + 2*(TWBR_VALUE)*PRESCALER)
@@ -12,7 +12,7 @@ void i2c_master_setup(void) {
 void i2c_master_start(void) {
     // Send start bit, enable interrupt, enable TWI  
     TWCR = (1<<TWINT)|(1<<TWSTA)|(1<<TWEN); 
-    while ((TWCR & (1 << TWSTA)) == 0){ ; } // Wait until start bit sent
+    while ((TWCR & (1 << TWSTA)) == 0); // Wait until start bit sent
 }
 
 void i2c_master_stop(void) {
@@ -46,18 +46,19 @@ uint8_t i2c_master_get_status(void) {
 
 void set_pin(uint8_t Wadd, uint8_t reg, uint8_t value){
     i2c_master_start();       // Start bit
-    if (TWIGetStatus() != START_SUCCESS); panic(); 
+    // if (i2c_master_get_status() != START_SUCCESS) { panic(); }
     
     i2c_master_send(Wadd);    // Send address for write
-    if (TWIGetStatus() != SLA_ACK_SUCCESS); panic(); 
+    // if (i2c_master_get_status() != SLA_ACK_SUCCESS) { panic(); }
     
     i2c_master_send(reg);     // Send data - which register?
-    if (TWIGetStatus() != DATA_ACK_SUCCESS); panic();
+    // if (i2c_master_get_status() != DATA_ACK_SUCCESS) { panic(); }
    
     i2c_master_send(value);   // Send data - what value?
-    if (TWIGetStatus() != DATA_ACK_SUCCESS); panic();
+    // if (i2c_master_get_status() != DATA_ACK_SUCCESS) { panic(); }
   
     i2c_master_stop();        // Stop bit   
+
 }
 
 uint8_t read_pin(uint8_t Wadd, uint8_t Radd, uint8_t reg){
@@ -65,16 +66,16 @@ uint8_t read_pin(uint8_t Wadd, uint8_t Radd, uint8_t reg){
     uint8_t recv;
    
     i2c_master_start();         // Send start bit
-    if (TWIGetStatus() != START_SUCCESS); panic();
+    // if (i2c_master_get_status() != START_SUCCESS) { panic(); }
     
     i2c_master_send(Wadd);      // Send write address
-    if (TWIGetStatus() != SLA_ACK_SUCCESS); panic();
+    // if (i2c_master_get_status() != SLA_ACK_SUCCESS) { panic(); }
    
     i2c_master_send(reg);       // Send the register we want to read from 
-    if (TWIGetStatus() != DATA_ACK_SUCCESS); panic();
+    // if (i2c_master_get_status() != DATA_ACK_SUCCESS) { panic(); }
   
     i2c_master_start();         // Restart
-    if ((i2c_master_get_status()) != RESTART_SUCCESS); panic();
+    // if ((i2c_master_get_status()) != RESTART_SUCCESS) { panic(); }
  
     i2c_master_send(Radd);      // Send read address
     recv = i2c_master_read_ack();    // Get received value, send ack
@@ -87,16 +88,16 @@ void i2c_read_multiple(uint8_t Wadd, uint8_t Radd, uint8_t reg, uint8_t *raw, in
     // uint8_t Radd = Wadd | 0b00000001; // Change the last bit to 1 for read address 
     int i;
     i2c_master_start();       // Send start bit
-    if (TWIGetStatus() != START_SUCCESS); panic();
+    // if (i2c_master_get_status() != START_SUCCESS) { panic(); }
     
     i2c_master_send(Wadd);    // Send write address
-    if (TWIGetStatus() != SLA_ACK_SUCCESS); panic();
+    // if (i2c_master_get_status() != SLA_ACK_SUCCESS) { panic(); }
     
     i2c_master_send(reg);     // Send the register we want to read from 
-    if (TWIGetStatus() != DATA_ACK_SUCCESS); panic();
+    // if (i2c_master_get_status() != DATA_ACK_SUCCESS) { panic(); }
     
-    i2c_master_restart();     // Restart
-    if ((i2c_master_get_status()) != RESTART_SUCCESS); panic();
+    i2c_master_start();     // Restart
+    // if ((i2c_master_get_status()) != RESTART_SUCCESS) { panic(); }
     i2c_master_send(Radd);    // Send read address
     
     for (i = 0; i < len; i++){
