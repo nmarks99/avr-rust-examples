@@ -20,7 +20,7 @@ uint16_t adc_read(uint8_t chan){
     ADCSRA |= (1<<ADSC); 
 
     // Wait for conversion to finish
-    // Will switch bag to 0 when its done
+    // Will switch back to 0 when its done
     while( ADCSRA & (1 << ADSC) );
 
     // Return value from ADC 
