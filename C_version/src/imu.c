@@ -1,6 +1,8 @@
 #include "imu.h"
 #include "usart.h"
 
+struct ImuStatus;
+
 void imu_setup(void) {
     // unsigned char who;
     // Check that communcation with IMU is correct
@@ -11,10 +13,11 @@ void imu_setup(void) {
     //     sprintf(buff,"who = %x",who);
     //     panic_msg(buff); 
     // }
-
-    if (imu_get_status() != 1) {
-        panic_msg("Paniced at IMU status check");
-    }
+    ImuStatus s = {0,0,0};
+    imu_get_status(&s);
+    if (s.acc != 1){
+        panic_msg("Accelerometer status 0");
+    } 
 
     // Initialize the acceleration sensor
     i2c_write_byte(IMU_WADD,IMU_CTRL1_XL,0b10000010); // Sample rate 1.66 kHz, 2g sensitivity, 100 Hz filter
@@ -38,9 +41,32 @@ void imu_read(uint8_t reg, int16_t *data, int len) {
     }
 }
 
-uint8_t imu_get_status(void) {
-    uint8_t mask = 0b00000001;
-    uint8_t status = i2c_read_byte(IMU_WADD,IMU_RADD,IMU_STATUS_REG);
-    status = status & mask;
+
+
+void imu_get_status(ImuStatus* status) {
+    uint8_t mask = 0b00000111;
+    uint8_t _stat = i2c_read_byte(IMU_WADD,IMU_RADD,IMU_STATUS_REG);
+    _stat = _stat & mask;
+    // struct ImuStatus status;
+    if ((_stat & (1 << 0)) == (1 << 0)) {
+        status->acc = 1;
+    }
+    else {
+        status->acc = 0;
+    }
+    
+    if ((_stat & (1 << 1)) == (1 << 1)) {
+        status->gyro = 1;
+    }
+    else {
+        status->gyro = 0;
+    }
+   
+    if ((_stat & (1 << 2)) == (1 << 2)) {
+        status->temp = 1;
+    }
+    else {
+        status->temp = 0;
+    }
     return status;
 }

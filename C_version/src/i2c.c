@@ -46,7 +46,7 @@ uint8_t i2c_master_get_status(void) {
     return status;
 }
 
-void write_byte(uint8_t Wadd, uint8_t reg, uint8_t value){
+void i2c_write_byte(uint8_t Wadd, uint8_t reg, uint8_t value){
     i2c_master_start();       // Start bit
     // if (i2c_master_get_status() != START_SUCCESS) { panic(); }
     
@@ -65,7 +65,7 @@ void write_byte(uint8_t Wadd, uint8_t reg, uint8_t value){
 
 // maybe should be i16?
 // should it be nack?
-uint8_t read_byte(uint8_t Wadd, uint8_t Radd, uint8_t reg){
+uint8_t i2c_read_byte(uint8_t Wadd, uint8_t Radd, uint8_t reg){
     // uint8_t Radd = Wadd | 0b00000001;
     uint8_t recv;
    

@@ -14,8 +14,18 @@
 #define IMU_CTRL3_C 0x12    // Read from multiple registers in a row
 #define IMU_OUT_TEMP_L 0x20 // Temperature
 
+struct ImuStatus {
+    int acc;
+    int gyro;
+    int temp;
+};
+
+;
+
 void imu_setup(void);
 void imu_read(uint8_t reg, int16_t *data, int len);
-uint8_t imu_get_status(void);
+void imu_get_status(ImuStatus *status);
+
+
 
 #endif
