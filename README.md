@@ -48,9 +48,9 @@ I may just abondon this whole thing very quickly and use avr_hal...or go back to
 - [x] Read USART
 - [x] Implement millis() function
 - [ ] Read analog pin with ADC
+- [ ] Control PWM pin
 - [ ] Refactor timer code to incorporate timers 0 and 2
 - [ ] Figure out a way to write unit tests in embedded no_std environment
 - [ ] Improve GPIO code for easy of use and performance
 - [ ] Read I2C device
-- [ ] Control PWM pin
 
