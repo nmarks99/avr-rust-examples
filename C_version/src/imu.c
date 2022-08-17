@@ -2,30 +2,28 @@
 #include "usart.h"
 
 void imu_setup(void) {
-    // unsigned char who;
     // Check that communcation with IMU is correct
-    
-    // who = read_byte(IMU_WADD,IMU_RADD,IMU_WHOAMI);
-    // if (who != 0b1101001) { 
-    //     char buff[10];
-    //     sprintf(buff,"who = %x",who);
-    //     panic_msg(buff); 
-    // }
-    // imu_status s = {0,0,0};
+    usart_println("Initializing IMU");
+    uint8_t who = i2c_read_byte(IMU_WADD,IMU_RADD,IMU_WHOAMI);
+    if (who != 0b01101001) { 
+        char buff[10];
+        sprintf(buff,"who = %dd",who);
+        panic_msg(buff); 
+    }
+    usart_println("Who check");
 
-    // imu_get_status(&imu_status);
-    // if (imu_status.acc != 1){
-    //     panic_msg("Accelerometer status 0");
-    // } 
-
-    // Initialize the acceleration sensor
+    // // Initialize the acceleration sensor
     i2c_write_byte(IMU_WADD,IMU_CTRL1_XL,0b10000010); // Sample rate 1.66 kHz, 2g sensitivity, 100 Hz filter
+    usart_println("acc check");
 
     // Initialize gyroscope
     i2c_write_byte(IMU_WADD,IMU_CTRL2_G,0b10001000);  // Sample rate 1.66 kHz, 1000 dps sensitivity
+    usart_println("gyro check");
 
     // Control register
     i2c_write_byte(IMU_WADD,IMU_CTRL3_C,0b00000100);  //  IF_INC = 1 
+    
+    usart_println("IMU setup complete");
 
 }
 
@@ -40,31 +38,9 @@ void imu_read(uint8_t reg, int16_t *data, int len) {
     }
 }
 
-
-
-// void imu_get_status(struct ImuStatus* status) {
-//     uint8_t mask = 0b00000111;
-//     uint8_t _stat = i2c_read_byte(IMU_WADD,IMU_RADD,IMU_STATUS_REG);
-//     _stat = _stat & mask;
-//     // struct ImuStatus status;
-//     if ((_stat & (1 << 0)) == (1 << 0)) {
-//         status->acc = 1;
-//     }
-//     else {
-//         status->acc = 0;
-//     }
-    
-//     if ((_stat & (1 << 1)) == (1 << 1)) {
-//         status->gyro = 1;
-//     }
-//     else {
-//         status->gyro = 0;
-//     }
-   
-//     if ((_stat & (1 << 2)) == (1 << 2)) {
-//         status->temp = 1;
-//     }
-//     else {
-//         status->temp = 0;
-//     }
-// }
+void who_am_I(void) {
+    uint8_t who = i2c_read_byte(IMU_WADD,IMU_RADD,IMU_WHOAMI);
+    char buff[10];
+    sprintf(buff,"who = %d",who);
+    usart_println(buff);
+}

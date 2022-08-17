@@ -6,14 +6,20 @@ void i2c_master_setup(void) {
     // Set I2C frequency to 400kHz
     TWSR = 0x00; // prescaler = 1
     TWBR = 0x0C; // 0x0C = 12 
-    TWCR |= (1 << TWEN); // Turn on TWI/I2C module  
+    TWCR = (1 << TWEN); // Turn on TWI/I2C module  
+    // panic_msg("Paniced at setup");
 }
 
 void i2c_master_start(void) {
     // Send start bit, enable interrupt, enable TWI  
     TWCR = (1<<TWINT)|(1<<TWSTA)|(1<<TWEN); 
-    while ((TWCR & (1 << TWSTA)) == 0); // Wait until start bit sent
-    if (i2c_master_get_status() != START_SUCCESS) { panic_msg("Paniced at start!"); }
+    while ( !(TWCR & (1 << TWINT)) ); // Wait until start bit sent
+}
+
+void i2c_master_send(uint8_t data_byte) {
+    TWDR = data_byte; // Store data in data register
+    TWCR = (1 << TWINT) | (1 << TWEN);
+    while (!(TWCR & (1<<TWINT))); // Wait for transmission
 }
 
 void i2c_master_stop(void) {
@@ -21,12 +27,6 @@ void i2c_master_stop(void) {
     TWCR = (1<<TWINT)|(1<<TWSTO)|(1<<TWEN); 
 }
 
-void i2c_master_send(uint8_t data_byte) {
-    TWDR = data_byte; // Store data in data register
-    TWCR = (1 << TWINT) | (1 << TWEN);
-    while ((TWCR & (1<<TWINT)) == 0); // Wait for transmission
-    if (i2c_master_get_status() != SLA_ACK_SUCCESS) { panic_msg("Paniced at send!"); }
-}
 
 uint8_t i2c_master_read_ack(void) {
     TWCR = (1<<TWINT)|(1<<TWEN)|(1<<TWEA); 
@@ -42,22 +42,26 @@ uint8_t i2c_master_read_nack(void) {
 
 uint8_t i2c_master_get_status(void) {
     uint8_t status;
-    status = TWSR & 0b11111000; // Mask status
+    status = TWSR & 0xF8; // Mask status
     return status;
 }
 
 void i2c_write_byte(uint8_t Wadd, uint8_t reg, uint8_t value){
     i2c_master_start();       // Start bit
-    // if (i2c_master_get_status() != START_SUCCESS) { panic(); }
+    while (i2c_master_get_status() != START_SUCCESS) { PORTB |= (1 << PORTB5);}
+    PORTB &= ~(1 << PORTB5); 
     
     i2c_master_send(Wadd);    // Send address for write
-    // if (i2c_master_get_status() != SLA_ACK_SUCCESS) { panic(); }
+    while (i2c_master_get_status() != SLA_ACK_SUCCESS) { PORTB |= (1 << PORTB5); }
+    PORTB &= ~(1 << PORTB5);
     
     i2c_master_send(reg);     // Send data - which register?
-    // if (i2c_master_get_status() != DATA_ACK_SUCCESS) { panic(); }
+    while (i2c_master_get_status() != DATA_ACK_SUCCESS) { PORTB |= (1 << PORTB5); }
+    PORTB &= ~(1 << PORTB5);
    
     i2c_master_send(value);   // Send data - what value?
-    // if (i2c_master_get_status() != DATA_ACK_SUCCESS) { panic(); }
+    while (i2c_master_get_status() != DATA_ACK_SUCCESS) { PORTB |= (1 << PORTB5); }
+    PORTB &= ~(1 << PORTB5);
   
     i2c_master_stop();        // Stop bit   
 

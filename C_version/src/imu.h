@@ -17,6 +17,7 @@
 
 void imu_setup(void);
 void imu_read(uint8_t reg, int16_t *data, int len);
+void who_am_I(void);
 // void imu_get_status(struct ImuStatus *status);
 
 
