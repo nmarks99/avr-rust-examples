@@ -7,43 +7,45 @@ void i2c_master_setup(void) {
     TWSR = 0x00; // prescaler = 1
     TWBR = 0x0C; // 0x0C = 12 
     TWCR = (1 << TWEN); // Turn on TWI/I2C module  
-    // panic_msg("Paniced at setup");
+    usart_println("I2C setup complete");
 }
 
 void i2c_master_start(void) {
     // Send start bit, enable interrupt, enable TWI  
     TWCR = (1<<TWINT)|(1<<TWSTA)|(1<<TWEN); 
-    while ( !(TWCR & (1 << TWINT)) ); // Wait until start bit sent
-    // usart_println("START");
+    usart_println("Waiting for start bit to be sent...");
+    while ((TWCR & (1<<TWINT)) == 0);
+    // while ( (TWCR & (1 << TWINT)) ); // Wait until start bit sent
+    usart_println("START");
 }
 
 void i2c_master_send(uint8_t data_byte) {
     TWDR = data_byte; // Store data in data register
     TWCR = (1 << TWINT) | (1 << TWEN);
     while (!(TWCR & (1<<TWINT))); // Wait for transmission
-    // usart_println("SEND");
+    usart_println("SEND");
 }
 
 void i2c_master_stop(void) {
     // Send stop bit, enable interrupts, enable TWI
     TWCR = (1<<TWINT)|(1<<TWSTO)|(1<<TWEN); 
-    // usart_println("STOP");
+    while ((TWCR & (1<<TWINT)));
+    usart_println("STOP\n");
 
 }
 
 uint8_t i2c_master_read_ack(void) {
     TWCR = (1<<TWINT)|(1<<TWEN)|(1<<TWEA); 
     while ((TWCR & (1<<TWINT)) == 0); // Wait for transmission
-    return TWDR; 
     usart_println("READ/ACK");
+    return TWDR; 
 }
 
 uint8_t i2c_master_read_nack(void) {
     TWCR = (1<<TWINT)|(1<<TWEN); 
     while ((TWCR & (1<<TWINT)) == 0); // Wait for transmission
-    return TWDR; 
     usart_println("READ/NACK");
-
+    return TWDR; 
 }
 
 uint8_t i2c_master_get_status(void) {
@@ -53,6 +55,7 @@ uint8_t i2c_master_get_status(void) {
 }
 
 void i2c_write_byte(uint8_t Wadd, uint8_t reg, uint8_t value){
+    usart_println("Beginning writing byte function");
     i2c_master_start();       // Start bit
     while (i2c_master_get_status() != START_SUCCESS) { PORTB |= (1 << PORTB5);}
     PORTB &= ~(1 << PORTB5); 
@@ -80,8 +83,8 @@ uint8_t i2c_read_byte(uint8_t Wadd, uint8_t Radd, uint8_t reg){
     uint8_t recv;
    
     i2c_master_start();             // Send start bit
-    while (i2c_master_get_status() != START_SUCCESS) { PORTB |= (1 << PORTB5);}
-    PORTB &= ~(1 << PORTB5); 
+    // while (i2c_master_get_status() != START_SUCCESS) { PORTB |= (1 << PORTB5);}
+    // PORTB &= ~(1 << PORTB5); 
     
     i2c_master_send(Wadd);          // Send write address
     // while (i2c_master_get_status() != SLA_R_ACK_SUCCESS) { PORTB |= (1 << PORTB5); }
@@ -100,8 +103,8 @@ uint8_t i2c_read_byte(uint8_t Wadd, uint8_t Radd, uint8_t reg){
     // PORTB &= ~(1 << PORTB5);
 
     recv = i2c_master_read_ack();   // Get received value, send ack
-    // while (i2c_master_get_status() != DATA_REC_ACK_SUCCESS) { PORTB |= (1 << PORTB5); }
-    // PORTB &= ~(1 << PORTB5);
+    while (i2c_master_get_status() != DATA_REC_ACK_SUCCESS) { PORTB |= (1 << PORTB5); }
+    PORTB &= ~(1 << PORTB5);
 
     i2c_master_stop();              // Stop bit
     

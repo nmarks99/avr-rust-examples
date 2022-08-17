@@ -10,8 +10,11 @@ void imu_setup(void) {
         sprintf(buff,"who = %dd",who);
         panic_msg(buff); 
     }
+    else {
+        usart_println("IMU found");
+    }
 
-    // // Initialize the acceleration sensor
+    // Initialize the acceleration sensor
     i2c_write_byte(IMU_WADD,IMU_CTRL1_XL,0b10000010); // Sample rate 1.66 kHz, 2g sensitivity, 100 Hz filter
 
     // Initialize gyroscope

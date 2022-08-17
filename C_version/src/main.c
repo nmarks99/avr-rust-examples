@@ -42,42 +42,42 @@ int main(void) {
     
     i2c_master_setup(); // Initialize I2C
     imu_setup();        // Initialize the IMU 
-    char buff[200];
-    usart_println("Entering loop...");
-    int16_t data[7];
+    // char buff[200];
+    // usart_println("Entering loop...");
+    // int16_t data[7];
     while(1){
-        if (acc_get_status() && gyro_get_status() && temp_get_status()) {
-            usart_println("All good");
-            // imu_read(0x20,data,14);
-            // sprintf(buff,"%d,%d,%d\t%d,%d,%d",data[1],data[2],data[3],data[4],data[5],data[6]);
-            // usart_println(buff);
-        } 
-        else {
-            if (temp_get_status()){
-                usart_print("Temp: OK\t");
-            }
-            else {
-                usart_print("Temp: BAD\t");
-            }
+        // if (acc_get_status() && gyro_get_status() && temp_get_status()) {
+        //     usart_println("All good");
+        //     // imu_read(0x20,data,14);
+        //     // sprintf(buff,"%d,%d,%d\t%d,%d,%d",data[1],data[2],data[3],data[4],data[5],data[6]);
+        //     // usart_println(buff);
+        // } 
+        // else {
+        //     if (temp_get_status()){
+        //         usart_print("Temp: OK\t");
+        //     }
+        //     else {
+        //         usart_print("Temp: BAD\t");
+        //     }
 
-            if (gyro_get_status()){
-                usart_print("gyro: OK\t");
-            }
+        //     if (gyro_get_status()){
+        //         usart_print("gyro: OK\t");
+        //     }
 
-            else {
-                usart_print("gyro: BAD\t");
-            }
+        //     else {
+        //         usart_print("gyro: BAD\t");
+        //     }
 
-            if (acc_get_status()){
-                usart_print("acc: OK");
-            }
-            else {
-                usart_print("acc: BAD");
-            }
-            usart_print("\n");
+        //     if (acc_get_status()){
+        //         usart_print("acc: OK");
+        //     }
+        //     else {
+        //         usart_print("acc: BAD");
+        //     }
+        //     usart_print("\n");
 
-        }
-        _delay_ms(250);
+        // }
+        // _delay_ms(250);
 
         
     }    
