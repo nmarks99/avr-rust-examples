@@ -10,22 +10,37 @@ void imu_setup(void) {
         sprintf(buff,"who = %dd",who);
         panic_msg(buff); 
     }
-    usart_println("Who check");
 
     // // Initialize the acceleration sensor
     i2c_write_byte(IMU_WADD,IMU_CTRL1_XL,0b10000010); // Sample rate 1.66 kHz, 2g sensitivity, 100 Hz filter
-    usart_println("acc check");
 
     // Initialize gyroscope
     i2c_write_byte(IMU_WADD,IMU_CTRL2_G,0b10001000);  // Sample rate 1.66 kHz, 1000 dps sensitivity
-    usart_println("gyro check");
-
+    
     // Control register
     i2c_write_byte(IMU_WADD,IMU_CTRL3_C,0b00000100);  //  IF_INC = 1 
     
     usart_println("IMU setup complete");
 
 }
+uint8_t acc_get_status() {
+    uint8_t status = i2c_read_byte(IMU_WADD,IMU_RADD,IMU_STATUS_REG);
+    status = status & 0b00000001;
+    return status;
+}
+
+uint8_t gyro_get_status() {
+    uint8_t status = i2c_read_byte(IMU_WADD,IMU_RADD,IMU_STATUS_REG);
+    status = status & 0b00000010;
+    return status;
+}
+
+uint8_t temp_get_status() {
+    uint8_t status = i2c_read_byte(IMU_WADD,IMU_RADD,IMU_STATUS_REG);
+    status = status & 0b00000100;
+    return status;
+}
+
 
 void imu_read(uint8_t reg, int16_t *data, int len) {
     uint8_t raw[14];

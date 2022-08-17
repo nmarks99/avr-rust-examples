@@ -12,14 +12,17 @@
 #define IMU_CTRL1_XL 0x10   // Acceleration control register
 #define IMU_CTRL2_G 0x11    // Gyroscope control register
 #define IMU_CTRL3_C 0x12    // Read from multiple registers in a row
+#define IMU_OUTX_L 0x28 // Acc out X,l
+#define IMU_OUTX_H 0x29 // Acc out, X,h 
 #define IMU_OUT_TEMP_L 0x20 // Temperature
 
 
 void imu_setup(void);
 void imu_read(uint8_t reg, int16_t *data, int len);
 void who_am_I(void);
-// void imu_get_status(struct ImuStatus *status);
-
+uint8_t acc_get_status(void);
+uint8_t gyro_get_status(void);
+uint8_t temp_get_status(void);
 
 
 #endif

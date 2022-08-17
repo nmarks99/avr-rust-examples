@@ -6,9 +6,11 @@
 
 #define START_SUCCESS 0x08
 #define RESTART_SUCCESS 0x10
-#define SLA_ACK_SUCCESS 0x18
+#define SLA_W_ACK_SUCCESS 0x18
 #define SLA_NACK_SUCCESS 0x20
-#define DATA_ACK_SUCCESS 0x28
+#define SLA_R_ACK_SUCCESS 0x40
+#define DATA_SENT_ACK_SUCCESS 0x28
+#define DATA_REC_ACK_SUCCESS 0x50
 
 
 void i2c_master_setup(void); // set up I2C as master
