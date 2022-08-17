@@ -10,10 +10,10 @@ void adc_init(void) {
     ADCSRA |= (1 << ADPS0) | (1 << ADPS1) | (1 << ADPS2) | (1 << ADEN);
 }
 
-uint16_t adc_read(uint8_t chan){ 
+uint16_t adc_read(uint8_t channel){ 
 
     // Select ADC channel, masking for safety
-    ADMUX = (ADMUX & 0xF0) | (chan & 0x0F); 
+    ADMUX = (ADMUX & 0xF0) | (channel & 0x0F); 
     
     // Set single conversion mode 
     // setting ADSC to start the conversion
