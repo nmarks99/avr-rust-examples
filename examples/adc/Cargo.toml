@@ -1,0 +1,24 @@
+[package]
+name = "firmware"
+version = "0.1.0"
+authors = ["Nick <nmarks99@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+
+[dependencies.nano_hal]
+path = "../../nano_hal"
+
+[dependencies.avr-device]
+version = "0.3.4"
+features = ["atmega32u4"]
+
+[dependencies]
+panic-halt = "0.2.0"
+heapless = "0.7.16"
+itoa = "1.0.3"

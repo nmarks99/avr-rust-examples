@@ -26,17 +26,17 @@ pub unsafe fn init() {
     write_volatile(ADCSRA, res);
 }
 
-pub unsafe fn adc_read(channel: u8) -> u16 {
+pub unsafe fn read(channel: u8) -> u16 {
     // Select ADC channel, masking for safety
-    let res: u8 = (read_volatile(ADMUX) & 0xF0) | (chan & 0x0F);
+    let res: u8 = (read_volatile(ADMUX) & 0xF0) | (channel & 0x0F);
     write_volatile(ADMUX,res);
 
     // Set single conversion mode
     // settings ADSC to start the conversion
-    let res: u8 = read_volatile(ADCSRA) | (1 << ADSC);
+    let res: u8 = read_volatile(ADCSRA) | (1 << *ADSC);
     write_volatile(ADCSRA, res);
 
-    let stat: u8 = read_volatile(ADCSRA) & (1 << ADSC); 
+    let stat: u8 = read_volatile(ADCSRA) & (1 << *ADSC); 
     while stat == 1u8 {} // wait for conversion to finish (gets set back to 0)
 
     // Return value from the ADC
