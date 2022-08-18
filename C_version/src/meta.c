@@ -15,3 +15,18 @@ void panic_msg(char *msg) {
     PORTB |= (1 << PORTB5); // set high
     while(1){ ; }
 }
+
+
+void led_set_output(void) {
+    DDRB |= (1 << DDB5); // set pin B5 as ouptut
+}
+void led_set_low(void) {
+    PORTB &= ~(1 << PORTB5); // set low
+}
+void led_set_high(void) {
+    PORTB |= (1 << PORTB5); // set high
+}
+void led_toggle(void) {
+    PORTB ^= (1 << PORTB5);
+}
+

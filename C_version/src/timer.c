@@ -1,6 +1,16 @@
 #include "timer.h"
 #include<stdio.h>
 
+// ISR(TIMER1_OVF_vect) {
+//     /* timer1_reset(); */
+//     MILLIS++;
+//     led_toggle();
+// }
+
+// void intialize(void) {
+//     TIMSK1 |= 0x01;
+//     sei();
+
 
 
 void timer1_init(void) {
