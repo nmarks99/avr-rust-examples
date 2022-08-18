@@ -15,12 +15,27 @@ int main(void) {
     i2c_master_setup(); // Initialize I2C
     imu_setup();        // Initialize the IMU 
     char buff[200];
-    // usart_println("Entering loop...");
-    // int16_t data[7];
+    usart_println("Entering loop...");
+    int16_t data[7];
     while(1){
-        uint8_t s = acc_get_status();
-        sprintf(buff,"%d",s);
-        usart_println(buff);
+        uint8_t a = acc_get_status();
+        uint8_t g = gyro_get_status();
+        uint8_t t = temp_get_status();
+        
+        sprintf(buff,"%d,%d,%d",a,g,t);
+        usart_println(buff); 
+        // imu_read(IMU_OUT_TEMP_L,data,14);
+        // sprintf(buff,"%hi,%f,%f",data[0],data[1],data[2]);
+        // usart_println(buff);
+
+        _delay_ms(1000);        
+
+
+
+
+
+
+
         // if (temp_get_status()){
         //         usart_print("Temp: OK\t");
         // }
@@ -43,6 +58,5 @@ int main(void) {
         //     usart_print("acc: BAD");
         // }
         // usart_print("\n"); 
-        _delay_ms(500);        
     }
 }    

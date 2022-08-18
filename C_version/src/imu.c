@@ -5,25 +5,29 @@ void imu_setup(void) {
     // Check that communcation with IMU is correct
     usart_println("Initializing IMU");
     uint8_t who = i2c_read_byte(IMU_WADD,IMU_RADD,IMU_WHOAMI);
-    if (who != 0b01101001) { 
+    if (who != 0b1101001) { 
         char buff[10];
-        sprintf(buff,"who = %dd",who);
+        sprintf(buff,"who = %d",who);
         panic_msg(buff); 
     }
     else {
-        usart_println("IMU found");
+        char buff[10];
+        sprintf(buff,"who = %d\n",who);
+        usart_println(buff);
     }
-
+    
     // Initialize the acceleration sensor
     i2c_write_byte(IMU_WADD,IMU_CTRL1_XL,0b10000010); // Sample rate 1.66 kHz, 2g sensitivity, 100 Hz filter
+    usart_println("Accelerometer initialized\n");
 
     // Initialize gyroscope
     i2c_write_byte(IMU_WADD,IMU_CTRL2_G,0b10001000);  // Sample rate 1.66 kHz, 1000 dps sensitivity
-    
+    usart_println("Gyroscope initialized\n");
+     
     // Control register
     i2c_write_byte(IMU_WADD,IMU_CTRL3_C,0b00000100);  //  IF_INC = 1 
-    
-    usart_println("IMU setup complete");
+
+    usart_println("\nIMU setup complete\n");
 
 }
 uint8_t acc_get_status() {
