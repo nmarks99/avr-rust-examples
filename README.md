@@ -1,6 +1,7 @@
-# nano-hal
-A simple hardware abstraction layer written in Rust
-for the ATMega328p microcontroller/Arduino Nano board. 
+# nano-hal - SCRAPPED!
+I wanted to make a C-like library in rust for the ATMega328p,
+with lots of unsafe{} everywhere, but I finally came to my
+senses and I'm using Rahix/avr-hal...
 
 ## What this project tries to be:
 - As easy as possible to understand, especially for someone coming from 
