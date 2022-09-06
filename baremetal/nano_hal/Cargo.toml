@@ -1,0 +1,24 @@
+[package]
+name = "nano_hal"
+version = "0.1.0"
+authors = ["Nick <nmarks99@gmail.com>"]
+edition = "2018"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+
+[dependencies]
+panic-halt = "0.2.0"
+embedded-hal = "0.2.3"
+
+[dependencies.avr-device]
+version = "0.3.4"
+features = ["atmega328p"]
+
+[dependencies.arduino-hal]
+git = "https://github.com/Rahix/avr-hal"
+rev = "4f8ab2594d4497bdfbd57b641c05c407f3b309f5"
+features = ["arduino-nano"]
